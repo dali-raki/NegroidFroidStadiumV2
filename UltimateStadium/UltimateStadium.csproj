@@ -6,4 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Components\Pages\" />
+      <Folder Include="Services\" />
+      <Folder Include="Storage\" />
+    </ItemGroup>
+
 </Project>
