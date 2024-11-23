@@ -15,6 +15,7 @@ public class StadiumStorage : IStadiumStorage
     private readonly string connectionString;
     
     private readonly string selectAllStadiumsQuery="select * from stadiums";
+    private readonly string insertNewStadiumQuery="insert into stadiums (stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved) values (@stadiumId,@stadiumName,@stadiumPlace,@stadiumPrice,@isReserved)";
     public async Task<List<Stadium>> selectAllStadiums()
     {
         List<Stadium> stadiums = new List<Stadium>();
@@ -50,5 +51,30 @@ public class StadiumStorage : IStadiumStorage
         }
 
         return null;
+    }
+
+    public async Task<bool> insertNewStadium(string stadiumName,string stadiumPlace,double stadiumPrice)
+    {
+        try
+        {
+            await using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(insertNewStadiumQuery, connection);
+                await connection.OpenAsync();
+                command.Parameters.AddWithValue("stadiumId", Guid.NewGuid().ToString());
+                command.Parameters.AddWithValue("stadiumName", stadiumName);
+                command.Parameters.AddWithValue("stadiumPlace", stadiumPlace);
+                command.Parameters.AddWithValue("stadiumPrice", stadiumPrice);
+                command.Parameters.AddWithValue("isReserved", false);
+                return await command.ExecuteNonQueryAsync()>0;
+               
+            }
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw new Exception("Error Negroid 2");
+        }
     }
 }
