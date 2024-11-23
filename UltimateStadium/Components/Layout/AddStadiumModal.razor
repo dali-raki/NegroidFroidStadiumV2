@@ -1,0 +1,164 @@
+@using BlazorApp1.Domain
+@using UltimateStadium.Services
+
+@if (Show)
+{
+    <div class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Stadium</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="stadiumName" class="form-label">Stadium Name</label>
+                        <input type="text" id="stadiumName" class="form-control" @bind="stadium.stadiumName"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stadiumPlace" class="form-label">Location</label>
+                        <input type="text" id="stadiumPlace" class="form-control" @bind="stadium.stadiumPlace"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stadiumPrice" class="form-label">Rental Price</label>
+                        <input type="number" id="stadiumPrice" class="form-control" @bind="stadium.stadiumRentalPrice"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"/>
+                            Is Reserved
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @onclick="SaveStadium">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public EventCallback<bool> OnClose { get; set; }
+    [Parameter] public EventCallback<Stadium> OnSave { get; set; }
+    [Inject] public IStadiumService StadiumService { get; set; }
+    private string keyframes;
+    
+    private Stadium stadium = new Stadium(null, null, null, 0.00, false);
+
+    private async Task SaveStadium()
+    {
+        // Call the service to add a new stadium and update the `stadium` object
+        var addedStadium = await StadiumService.addNewStadium(
+            stadium.stadiumName,
+            stadium.stadiumPlace,
+            stadium.stadiumRentalPrice
+        );
+
+        if (addedStadium != null)
+        {
+            // Notify the parent component about the newly added stadium
+           // await OnSave.InvokeAsync(addedStadium);
+        }
+        
+
+        // Close the modal after saving
+        await CloseModal();
+    }
+
+    private void Load()
+    {
+        
+    }
+
+    private async Task CloseModal()
+    {
+        await OnClose.InvokeAsync(false); // Hide modal
+    }
+
+}
+
+<style>
+    /* Modal Overlay */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: 1050; /* Ensures it appears above other elements */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    /* Modal Dialog */
+    .modal-dialog {
+        width: 90%;
+        max-width: 500px;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        animation: fadeIn 0.3s ease;
+    }
+
+    /* Modal Header */
+    .modal-header {
+        padding: 16px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Close Button */
+    .modal-header .btn-close {
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    /* Modal Body */
+    .modal-body {
+        padding: 16px;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 16px;
+        text-align: right;
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* Save and Cancel Buttons */
+    .modal-footer .btn {
+        margin-left: 8px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+</style>

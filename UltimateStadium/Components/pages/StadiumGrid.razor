@@ -1,0 +1,80 @@
+@page "/stadium-grid"
+@using BlazorApp1.Domain
+@using UltimateStadium.Storage
+@inject IStadiumStorage StadiumStorage
+@using UltimateStadium.Components.Layout
+@rendermode InteractiveServer
+
+<h3>Stadium Management</h3>
+
+<div class="container mt-4">
+    <!-- Add Stadium Button -->
+    <button class="btn btn-primary mb-3" @onclick="OpenAddStadiumModal">Add Stadium</button>
+
+    <!-- Grid Display -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Reserved</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Stadiums == null || Stadiums.Count == 0)
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No stadiums available.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var stadium in Stadiums)
+                {
+                    <tr>
+                        <td>@stadium.stadiumName</td>
+                        <td>@stadium.stadiumPlace</td>
+                        <td>@stadium.stadiumRentalPrice</td>
+                        <td>@(stadium.isRented ? "Yes" : "No")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Stadium Modal -->
+<AddStadiumModal Show="@ShowModal" OnClose="CloseAddStadiumModal" OnSave="AddNewStadium" />
+
+@code {
+    private List<Stadium> Stadiums = new();
+    private bool ShowModal = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load stadiums from the database or storage
+        Stadiums = await StadiumStorage.selectAllStadiums();
+    }
+
+    private void OpenAddStadiumModal()
+    {
+        ShowModal = true; // Show the modal
+        Console.WriteLine("press");
+    }
+
+    private void CloseAddStadiumModal(bool show)
+    {
+        ShowModal = show; // Hide the modal
+    }
+
+    private async Task AddNewStadium(Stadium stadium)
+    {
+        Stadiums.Add(stadium); // Add to local list
+
+        // Optionally, save the new stadium to the database
+        // await StadiumStorage.AddStadium(stadium);
+
+        StateHasChanged(); // Refresh the UI
+    }
+}
