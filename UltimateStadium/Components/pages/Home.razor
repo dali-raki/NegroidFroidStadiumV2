@@ -1,16 +1,18 @@
 @page "/"
+@using BlazorApp1.Domain
+@using UltimateStadium.Services
 
 <div class="container py-4">
     <div class="row g-4">
-        @foreach (var item in Items) // Replace "Items" with your data source
+        @foreach (var stadium in stadiums) 
         {
             <div class="col-md-4">
                 <div class="card h-100 shadow-sm">
-                    <img src="/Image/img1.jpg" class="card-img-top" alt="@item.stadiumName">
+                    <img src="/Image/IMG_0543.JPG" class="card-img-top" alt="@stadium.stadiumName">
                     <div class="card-body">
-                        <h5 class="card-title">@item.stadiumName</h5>
-                        <p class="card-text text-muted">@item.stadiumPlace</p>
-                        <p class="card-text fw-bold">@item.stadiumRentalPrice</p>
+                        <h5 class="card-title">@stadium.stadiumName</h5>
+                        <p class="card-text text-muted">@stadium.stadiumPlace</p>
+                        <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
                     </div>
                     <div class="card-footer text-center bg-white">
                         <a href="#" class="btn btn-primary">View Details</a>
@@ -21,47 +23,13 @@
     </div>
 </div>
 @code{
-    @using UltimateStadium.Components.Models.Staduimmodels;
-    List<StaduimModel> Items = new List<StaduimModel>();
-
-    StaduimModel s = new StaduimModel()
-        {
-            stadiumId = Guid.NewGuid().ToString(),
-            stadiumName = "Test1",
-            stadiumPlace = "test1",
-            stadiumRentalPrice = 000
-        };
-
-    StaduimModel s2 = new StaduimModel()
-        {
-            stadiumId = Guid.NewGuid().ToString(),
-            stadiumName = "Test2",
-            stadiumPlace = "test2",
-            stadiumRentalPrice = 1000
-        };
-
-    StaduimModel s3 = new StaduimModel()
-        {
-            stadiumId = Guid.NewGuid().ToString(),
-            stadiumName = "Test3",
-            stadiumPlace = "test3",
-            stadiumRentalPrice = 2000
-        };
-
-    StaduimModel s4 = new StaduimModel()
-        {
-            stadiumId = Guid.NewGuid().ToString(),
-            stadiumName = "Test4",
-            stadiumPlace = "test4",
-            stadiumRentalPrice = 3000
-        };
-
-    public Home()
+    [Inject] public IStadiumService StadiumService { get; set; }
+    
+    List<Stadium> stadiums=new List<Stadium>();
+    protected override async Task OnInitializedAsync()
     {
-        Items.Add(s);
-        Items.Add(s2);
-        Items.Add(s3);
-        Items.Add(s4);
+        stadiums = await StadiumService.getAllStadiums();
     }
+
 }
 

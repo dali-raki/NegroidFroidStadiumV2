@@ -7,9 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Pages\" />
-      <Folder Include="Services\" />
-      <Folder Include="Storage\" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+      <PackageReference Include="SQL" Version="1.0.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\images\background.jpg" />
     </ItemGroup>
 
 </Project>

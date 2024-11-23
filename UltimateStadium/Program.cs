@@ -1,11 +1,14 @@
 using UltimateStadium.Components;
+using UltimateStadium.Services;
+using UltimateStadium.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.AddScoped<IStadiumService, StadiumService>();
+builder.Services.AddScoped<IStadiumStorage, StadiumStorage>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
