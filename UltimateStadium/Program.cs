@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<IStadiumService, StadiumService>();
 builder.Services.AddScoped<IStadiumStorage, StadiumStorage>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
