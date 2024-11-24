@@ -1,14 +1,15 @@
-﻿@page "/login"
-
+﻿@page "/"
+@rendermode InteractiveServer
+@inject NavigationManager man
 <div class="form-container">
     <div class="icon">
         ⚽
     </div>
     <h1>Login</h1>
     <form>
-        <input type="email" placeholder="Email Address" required>
-        <input type="password" placeholder="Password" required>
-        <input type="submit" value="Login">
+        <input type="email" @bind="email" placeholder="Email Address" required>
+        <input type="password" @bind="passsword" placeholder="Password" required>
+        <input type="submit" value="Login"  @onclick="login">
         <a href="#" class="forgot-password">Forgot Password?</a>
     </form>
 </div>
@@ -105,3 +106,27 @@
             background-color:transparent;
         }
     </style>
+    
+    
+    
+    
+    @code
+    {
+        string email { get; set; } = "";
+        string passsword { get; set; } = "";
+
+
+        private void login()
+        {
+           
+            if (email.Equals( "a@gmail.com") && passsword.Equals("a"))
+            {
+                man.NavigateTo("/Home");
+            }
+            else if (email.Equals( "b@gmail.com") && passsword.Equals( "b"))
+            {
+                man.NavigateTo("/stadium-grid");
+            }
+            
+        }
+    }
