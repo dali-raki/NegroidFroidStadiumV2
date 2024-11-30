@@ -164,6 +164,8 @@
 </style>
 @code {
     [Inject] public IStadiumService StadiumService { get; set; }
+    [Inject] public IDashBoardService dashBoardService { get; set; }
+
     private bool showPopup2 = false;
     List<Stadium> stadiums = new List<Stadium>();
     protected override async Task OnInitializedAsync()

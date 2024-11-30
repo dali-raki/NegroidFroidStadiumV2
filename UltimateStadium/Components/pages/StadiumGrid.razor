@@ -40,8 +40,8 @@
                         <td>@stadium.stadiumRentalPrice</td>
                         <td>@(stadium.isRented ? "Yes" : "No")</td>
                         <td>
-                            <button @onclick="() => DeleteStadium(Guid.Parse(stadium.stadiumId.ToString()))">D</button>
-                            <button>E</button>
+                            <button @onclick="() => DeleteStadium(Guid.Parse(stadium.stadiumId.ToString()))"><i class="fa-solid fa-trash"></i></button>
+                            <button><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                     </tr>
                 }
@@ -49,6 +49,105 @@
         </tbody>
     </table>
 </div>
+<style>
+    h3 {
+        text-align: center;
+        font-weight: bold;
+        color: #343a40; /* Dark gray for readability */
+        margin-bottom: 20px;
+    }
+
+    .container {
+        max-width: 1200px; /* Limits the width for better readability */
+        margin: 0 auto; /* Centers the container */
+        padding: 20px;
+        background-color: #f8f9fa; /* Light background for contrast */
+        border-radius: 10px; /* Smooth corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    button.btn-primary {
+        background-color: #007bff; /* Primary blue */
+        color: #fff;
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 5px; /* Rounded button */
+        border: none;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        button.btn-primary:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+    .table {
+        margin-top: 20px;
+        background-color: #ffffff; /* White background for the table */
+        border-radius: 10px; /* Smooth corners */
+        overflow: hidden; /* Prevents content overflow on the corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+        .table th {
+            background-color: #007bff; /* Primary blue for header */
+            color: #fff; /* White text for contrast */
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .table td {
+            text-align: center;
+            vertical-align: middle; /* Aligns content vertically */
+            color: #343a40; /* Dark gray text */
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #f2f2f2; /* Alternating row color */
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef; /* Light gray on hover */
+            transition: background-color 0.3s;
+        }
+
+    button i {
+        font-size: 1rem;
+        color: #ffffff; /* White icons */
+    }
+
+        button i:hover {
+            color: #f8f9fa; /* Slight color change for icons on hover */
+        }
+
+    button {
+        background-color: #dc3545; /* Red for delete button */
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px; /* Rounded button */
+        cursor: pointer;
+        transition: transform 0.2s, background-color 0.3s;
+    }
+
+        button:hover {
+            transform: scale(1.1); /* Slight zoom on hover */
+            background-color: #c82333; /* Darker red */
+        }
+
+        button:last-child {
+            background-color: #ffc107; /* Yellow for edit button */
+        }
+
+            button:last-child:hover {
+                background-color: #e0a800; /* Darker yellow on hover */
+            }
+
+    .text-center {
+        font-size: 1rem;
+        color: #6c757d; /* Neutral gray text for empty rows */
+    }
+
+</style>
 
 <!-- Add Stadium Modal -->
 <AddStadiumModal Show="@ShowModal" OnClose="CloseAddStadiumModal" OnSave="AddNewStadium" />
