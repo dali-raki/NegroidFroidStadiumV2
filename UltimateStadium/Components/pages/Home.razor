@@ -14,6 +14,15 @@
                         <h5 class="card-title">@stadium.stadiumName</h5>
                         <p class="card-text text-muted">@stadium.stadiumPlace</p>
                         <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
+                        @if (@stadium.isRented)
+                        {
+                            <p>Stadium Reserved</p>
+                        }
+                        else
+                        {
+                            <p>Stadium Available</p> 
+                        }
+                       
                     </div>
                     <div class="card-footer text-center bg-white">
                         <button @onclick="OpenPopup2" class="btn-primary">Reserve Stadium</button>

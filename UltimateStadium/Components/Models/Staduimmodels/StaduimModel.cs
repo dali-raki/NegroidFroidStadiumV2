@@ -7,6 +7,6 @@
         public string stadiumName { get; set; }
         public string stadiumPlace { get; set; }
         public double stadiumRentalPrice { get; set; }
-        //public bool isRented { get; set; }
+        public bool isRented { get; set; }
     }
 }
