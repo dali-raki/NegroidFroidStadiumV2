@@ -1,0 +1,76 @@
+@page "/DashBoard"
+@using UltimateStadium.Services
+@inject IDashBoardService dashBoard
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Users</h5>
+                            <h1>@usersCount</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+    
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <i class="fa-solid fa-user-secret"></i>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Manager</h5>
+                            <h1>@managerCount</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+   
+        </div>
+        <div class="col">
+
+
+       
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <i class="fa-regular fa-futbol"></i>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Stadium</h5>
+                            <h1>@stadiumsCount</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+
+    private int managerCount = 0, usersCount = 0, stadiumsCount = 0;
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+       managerCount= await dashBoard.getManagersCount();
+       usersCount= await dashBoard.getUsersCount();
+       stadiumsCount = await dashBoard.getStadiumsCount();
+    }
+
+}

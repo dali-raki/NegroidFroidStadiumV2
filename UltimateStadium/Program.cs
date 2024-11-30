@@ -9,6 +9,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<IStadiumService, StadiumService>();
 builder.Services.AddScoped<IStadiumStorage, StadiumStorage>();
+builder.Services.AddScoped<IDashBoardStorage, DashBoardStorage>();
+builder.Services.AddScoped<IDashBoardService, DashBoardService>();
 
 var app = builder.Build();
 
