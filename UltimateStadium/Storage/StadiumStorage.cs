@@ -77,4 +77,5 @@ public class StadiumStorage : IStadiumStorage
             throw new Exception("Error Negroid 2");
         }
     }
+    
 }

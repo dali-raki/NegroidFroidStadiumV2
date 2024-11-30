@@ -6,10 +6,10 @@
         ⚽
     </div>
     <h1>Login</h1>
-    <form>
-        <input type="email" @bind="email" placeholder="Email Address" required>
-        <input type="password" @bind="passsword" placeholder="Password" required>
-        <input type="submit" value="Login"  @onclick="login">
+    <form @onsubmit="login">
+        <input type="email" @bind="email" placeholder="Email Address" >
+        <input type="password" @bind="passsword" placeholder="Password" >
+        <input type="submit" value="Login" >
         <a href="#" class="forgot-password">Forgot Password?</a>
     </form>
 </div>
@@ -118,15 +118,15 @@
 
         private void login()
         {
-           
-            if (email.Equals( "a@gmail.com") && passsword.Equals("a"))
+            man.NavigateTo("/stadium-grid");
+            /*if (email.Equals( "a@gmail.com") && passsword.Equals("a"))
             {
                 man.NavigateTo("/Home");
             }
             else if (email.Equals( "b@gmail.com") && passsword.Equals( "b"))
             {
-                man.NavigateTo("/stadium-grid");
-            }
+                
+            }*/
             
         }
     }

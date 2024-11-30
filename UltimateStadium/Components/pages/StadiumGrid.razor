@@ -63,17 +63,17 @@
         Console.WriteLine("press");
     }
 
-    private void CloseAddStadiumModal(bool show)
+    private async void CloseAddStadiumModal(bool show)
     {
         ShowModal = show; // Hide the modal
+        Stadiums = await StadiumStorage.selectAllStadiums();
     }
 
     private async Task AddNewStadium(Stadium stadium)
     {
         Stadiums.Add(stadium); // Add to local list
 
-        // Optionally, save the new stadium to the database
-        // await StadiumStorage.AddStadium(stadium);
+        
 
         StateHasChanged(); // Refresh the UI
     }
