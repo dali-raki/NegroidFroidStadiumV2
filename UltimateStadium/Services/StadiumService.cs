@@ -11,7 +11,7 @@ public class StadiumService : IStadiumService
     {
         this.stadiumStorage = stadiumStorage;
     }
-    
+
     public async Task<List<Stadium>> getAllStadiums()
     {
         try
@@ -24,15 +24,24 @@ public class StadiumService : IStadiumService
         }
     }
 
-    public async Task<bool> addNewStadium(string stadiumName,string stadiumPlace,double stadiumPrice)
+    public async Task<bool> addNewStadium(string stadiumName, string stadiumPlace, double stadiumPrice)
     {
         try
         {
-           return await stadiumStorage.insertNewStadium(stadiumName,stadiumPlace,stadiumPrice);
+            return await stadiumStorage.insertNewStadium(stadiumName, stadiumPlace, stadiumPrice);
         }
         catch (Exception e)
         {
             throw e;
         }
+    }
+
+    public async Task RemoveStadium(Guid stadiumId)
+    {
+        try
+        {
+            await stadiumStorage.DeleteStadium(stadiumId);
+        }
+        catch (Exception e) { }
     }
 }

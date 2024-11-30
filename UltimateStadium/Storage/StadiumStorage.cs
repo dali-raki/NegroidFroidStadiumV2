@@ -16,6 +16,7 @@ public class StadiumStorage : IStadiumStorage
     
     private readonly string selectAllStadiumsQuery="select * from stadiums";
     private readonly string insertNewStadiumQuery="insert into stadiums (stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved) values (@stadiumId,@stadiumName,@stadiumPlace,@stadiumPrice,@isReserved)";
+    private readonly string deleteStadiumByIdQuery = "DELETE FROM stadiums WHERE stadiumId = @stadiumId;";
     public async Task<List<Stadium>> selectAllStadiums()
     {
         List<Stadium> stadiums = new List<Stadium>();
@@ -77,5 +78,29 @@ public class StadiumStorage : IStadiumStorage
             throw new Exception("Error Negroid 2");
         }
     }
+
+ 
+            public async Task DeleteStadium(Guid stadiumId)
+            {
+                try
+                {
+                    await using (var connection = new SqlConnection(connectionString))
+                    {
+                        await connection.OpenAsync();
+                        var command = new SqlCommand(deleteStadiumByIdQuery, connection);
+                        command.Parameters.AddWithValue("@stadiumId", stadiumId);
+
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+               
+            }
+
+
+       
+    }
     
-}

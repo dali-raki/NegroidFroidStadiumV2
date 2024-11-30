@@ -1,7 +1,8 @@
-@page "/Home"
+﻿@page "/s"
 @using BlazorApp1.Domain
 @using UltimateStadium.Services
 @rendermode InteractiveServer
+
 
 <div class="container py-4">
     <div class="row g-4">
@@ -16,7 +17,7 @@
                         <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
                     </div>
                     <div class="card-footer text-center bg-white">
-                        <button @onclick="OpenPopup2" class="btn-primary">Reserve Stadium</button>
+                        <button @onclick="OpenPopup" class="btn-primary">Edit Stadium</button>
                     </div>
                 </div>
             </div>
@@ -27,18 +28,18 @@
 
 
 <form>
-    <div class="popup" style="display:@(showPopup2 ? "flex" : "none")">
+    <div class="popup" style="display:@(showPopup ? "flex" : "none")">
         <div class="popup-content">
             <h5 class="popup-title">Edit Stadium</h5>
-            <label class="form-label">Select Date with time</label>
-            <input type="datetime-local" class="form-control" />
+            <label class="form-label">Max Number of Players</label>
+            <input type="number" class="form-control" placeholder="Enter maximum players" />
 
-            <label class="form-label">Price Totale</label>
-            <input type="number" class="form-control" disabled />
+            <label class="form-label">Price per Reservation</label>
+            <input type="number" class="form-control" placeholder="Enter price per reservation" />
 
             <div class="popup-actions">
-                <button @onclick="ClosePopup2" class="btn-cancel">Cancel</button>
-                <button @onclick="ClosePopup2" class="btn-save">Save</button>
+                <button @onclick="ClosePopup" class="btn-cancel">Cancel</button>
+                <button @onclick="ClosePopup" class="btn-save">Save</button>
             </div>
         </div>
     </div>
@@ -155,20 +156,20 @@
 </style>
 @code {
     [Inject] public IStadiumService StadiumService { get; set; }
-    private bool showPopup2 = false;
+    private bool showPopup = false;
     List<Stadium> stadiums = new List<Stadium>();
     protected override async Task OnInitializedAsync()
     {
         stadiums = await StadiumService.getAllStadiums();
     }
 
-    private void OpenPopup2()
+    private void OpenPopup()
     {
-        showPopup2 = true;
+        showPopup = true;
     }
 
-    private void ClosePopup2()
+    private void ClosePopup()
     {
-        showPopup2 = false;
+        showPopup = false;
     }
 }

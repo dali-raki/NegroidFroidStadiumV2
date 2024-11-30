@@ -1,8 +1,9 @@
-@page "/stadium-grid"
+@page "/"
 @using BlazorApp1.Domain
 @using UltimateStadium.Storage
 @inject IStadiumStorage StadiumStorage
-@using UltimateStadium.Components.Layout
+@using  UltimateStadium.Services
+@using UltimateStadium.Layout
 @rendermode InteractiveServer
 
 <h3>Stadium Management</h3>
@@ -19,6 +20,7 @@
                 <th>Location</th>
                 <th>Price</th>
                 <th>Reserved</th>
+                <th>Option</th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +39,10 @@
                         <td>@stadium.stadiumPlace</td>
                         <td>@stadium.stadiumRentalPrice</td>
                         <td>@(stadium.isRented ? "Yes" : "No")</td>
+                        <td>
+                            <button @onclick="() => DeleteStadium(Guid.Parse(stadium.stadiumId.ToString()))">D</button>
+                            <button>E</button>
+                        </td>
                     </tr>
                 }
             }
@@ -48,13 +54,24 @@
 <AddStadiumModal Show="@ShowModal" OnClose="CloseAddStadiumModal" OnSave="AddNewStadium" />
 
 @code {
+
     private List<Stadium> Stadiums = new();
     private bool ShowModal = false;
 
+
+    [Inject] public IStadiumService StadiumService { get; set; }
     protected override async Task OnInitializedAsync()
     {
         // Load stadiums from the database or storage
         Stadiums = await StadiumStorage.selectAllStadiums();
+
+    }
+
+    public async Task DeleteStadium(Guid id)
+    {
+        await StadiumService.RemoveStadium(id);
+
+        await OnInitializedAsync();
     }
 
     private void OpenAddStadiumModal()
@@ -71,10 +88,12 @@
 
     private async Task AddNewStadium(Stadium stadium)
     {
-        Stadiums.Add(stadium); // Add to local list
+         Stadiums.Add(stadium); // Add to local list
 
         
 
         StateHasChanged(); // Refresh the UI
     }
+
+
 }
