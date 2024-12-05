@@ -8,7 +8,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add New Stadium</h5>
-                    <button type="button" class="btn-close" @onclick="CloseModal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -109,13 +108,14 @@
     /* Modal Header */
     .modal-header {
         padding: 16px;
-        background-color: #007bff;
+        background-color: #28a745;
         color: #fff;
         font-size: 1.25rem;
         font-weight: bold;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        justify-content: center;
     }
 
     /* Close Button */
@@ -137,15 +137,19 @@
 
     /* Modal Footer */
     .modal-footer {
-        padding: 16px;
-        text-align: right;
-        background-color: #f8f9fa;
-        border-top: 1px solid #dee2e6;
+       display: flex;
+    padding: 16px;
+    text-align: right;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    flex-direction: row-reverse;
+    justify-content: space-between;
     }
 
     /* Save and Cancel Buttons */
     .modal-footer .btn {
         margin-left: 8px;
+        border:none;
     }
 
     /* Animations */

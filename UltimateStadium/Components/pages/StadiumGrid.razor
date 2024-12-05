@@ -1,4 +1,4 @@
-@page "/"
+@page "/createS"
 @using BlazorApp1.Domain
 @using UltimateStadium.Storage
 @inject IStadiumStorage StadiumStorage
@@ -6,8 +6,8 @@
 @using UltimateStadium.Components.Layout
 @rendermode InteractiveServer
 
-<h3>Stadium Management</h3>
 
+<h3 class="text-center hero-title">Stadium Management</h3>
 <div class="container mt-4">
     <!-- Add Stadium Button -->
     <button class="btn btn-primary mb-3" @onclick="OpenAddStadiumModal">Add Stadium</button>
@@ -19,7 +19,6 @@
                 <th>Name</th>
                 <th>Location</th>
                 <th>Price</th>
-                <th>Reserved</th>
                 <th>Option</th>
             </tr>
         </thead>
@@ -38,10 +37,10 @@
                         <td>@stadium.stadiumName</td>
                         <td>@stadium.stadiumPlace</td>
                         <td>@stadium.stadiumRentalPrice</td>
-                        <td>@(stadium.isRented ? "Yes" : "No")</td>
                         <td>
                             <button @onclick="() => DeleteStadium(Guid.Parse(stadium.stadiumId.ToString()))"><i class="fa-solid fa-trash"></i></button>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button @onclick="OpenPopup" class="btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                            
                         </td>
                     </tr>
                 }
@@ -49,25 +48,268 @@
         </tbody>
     </table>
 </div>
-<style>
-    h3 {
-        text-align: center;
-        font-weight: bold;
-        color: #343a40; /* Dark gray for readability */
-        margin-bottom: 20px;
-    }
 
-    .container {
-        max-width: 1200px; /* Limits the width for better readability */
-        margin: 0 auto; /* Centers the container */
-        padding: 20px;
-        background-color: #f8f9fa; /* Light background for contrast */
-        border-radius: 10px; /* Smooth corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    }
 
+<form>
+    <div class="popup" style="display:@(showPopup ? "flex" : "none")">
+        <div class="popup-content">
+            <h5 class="popup-title">Edit Stadium</h5>
+            <label class="form-label">Stadium Name</label>
+            <input type="text" class="form-control"  placeholder="Stadium Name" />
+
+            <label class="form-label">Location</label>
+            <input type="text" class="form-control" placeholder="Location" />
+
+            <div class="popup-actions">
+                <button @onclick="ClosePopup" class="btn-cancel">Cancel</button>
+                <button @onclick="ClosePopup" class="btn-save">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+    <style >
+   /* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f5f0; /* Subtle grass field background tone */
+}
+
+/* Hero Section */
+.hero-title {
+    font-size: 2rem; /* Reduced font size */
+    font-weight: bold;
+    color: #fff;
+    background: #007b00; /* Green grass-like background */
+    padding: 50px 0; /* Reduced padding */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Football field vibe */
+}
+
+/* Stadium Management Styles */
+.container {
+    max-width: 1200px; /* Limits the width for better readability */
+    margin: 0 auto; /* Centers the container */
+    padding: 20px;
+    background-color: #e8f5e9; /* Light green background */
+    border-radius: 10px; /* Smooth corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Grid Display */
+.table {
+    margin-top: 20px;
+    background-color: #ffffff; /* White background for the table */
+    border-radius: 10px; /* Smooth corners */
+    overflow: hidden; /* Prevents content overflow on the corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Table Header */
+.table th {
+    background-color: #007b00; /* Dark green header */
+    color: #fff; /* White text for contrast */
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Table Data */
+.table td {
+    text-align: center;
+    vertical-align: middle; /* Aligns content vertically */
+    color: #343a40; /* Dark gray text */
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Alternating row color */
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef; /* Light gray on hover */
+    transition: background-color 0.3s;
+}
+
+/* Add Stadium Button */
+button.btn-primary {
+    background-color: #007bff; /* Primary blue */
+    color: #fff;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px; /* Rounded button */
+    border: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Delete Button */
+button i {
+    font-size: 1rem;
+    color: #ffffff; /* White icons */
+}
+
+button i:hover {
+    color: #f8f9fa; /* Slight color change for icons on hover */
+}
+
+button {
+    background-color: #dc3545; /* Red for delete button */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px; /* Rounded button */
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+    background-color: #c82333; /* Darker red */
+}
+
+button:last-child {
+    background-color: #ffc107; /* Yellow for edit button */
+}
+
+button:last-child:hover {
+    background-color: #e0a800; /* Darker yellow on hover */
+}
+
+/* Popup Styles */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    width: 400px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+
+.popup-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #007b00; /* Green text color */
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-align: left;
+    color: #555555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    border-color: #007b00; /* Green border on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 0, 0.4); /* Subtle green glow */
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn-cancel {
+    background-color: #f44336; /* Red button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #d32f2f;
+}
+
+.btn-save {
+    background-color: #007b00; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background-color: #388E3C;
+}
+
+/* Styling for the stadium card */
+.stadium-card {
+    background: #e8f5e9; /* Light green */
+    border: 2px solid #007b00; /* Dark green border */
+    border-radius: 10px; /* Slightly rounded corners */
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+.stadium-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 123, 0, 0.2); /* Darker green shadow on hover */
+}
+
+.stadium-card h3 {
+    color: #007b00; /* Green color for the title */
+    font-weight: bold;
+}
+
+.stadium-card p {
+    color: #495057; /* Neutral gray */
+}
+
+/* Icon Styles */
+i {
+    font-size: 2.5rem; /* Smaller icon size */
+    color: #1d72b8; /* Matches the accent blue */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icon Container Styles */
+.icon-container {
+    border-radius: 8px 0 0 8px; /* Matches card corner rounding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 12%;
+}
+    /* Add Stadium Button */
     button.btn-primary {
-        background-color: #007bff; /* Primary blue */
+        background-color: #28a745; /* Changed to green */
         color: #fff;
         font-size: 1rem;
         padding: 10px 20px;
@@ -77,49 +319,11 @@
     }
 
         button.btn-primary:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #218838; /* Darker green on hover */
             transform: scale(1.05); /* Slight zoom effect */
         }
 
-    .table {
-        margin-top: 20px;
-        background-color: #ffffff; /* White background for the table */
-        border-radius: 10px; /* Smooth corners */
-        overflow: hidden; /* Prevents content overflow on the corners */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    }
-
-        .table th {
-            background-color: #007bff; /* Primary blue for header */
-            color: #fff; /* White text for contrast */
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .table td {
-            text-align: center;
-            vertical-align: middle; /* Aligns content vertically */
-            color: #343a40; /* Dark gray text */
-        }
-
-        .table tbody tr:nth-child(odd) {
-            background-color: #f2f2f2; /* Alternating row color */
-        }
-
-        .table tbody tr:hover {
-            background-color: #e9ecef; /* Light gray on hover */
-            transition: background-color 0.3s;
-        }
-
-    button i {
-        font-size: 1rem;
-        color: #ffffff; /* White icons */
-    }
-
-        button i:hover {
-            color: #f8f9fa; /* Slight color change for icons on hover */
-        }
-
+    /* Delete Button */
     button {
         background-color: #dc3545; /* Red for delete button */
         border: none;
@@ -141,11 +345,95 @@
             button:last-child:hover {
                 background-color: #e0a800; /* Darker yellow on hover */
             }
-
-    .text-center {
-        font-size: 1rem;
-        color: #6c757d; /* Neutral gray text for empty rows */
+    /* Popup Styles */
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Darkened background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
     }
+
+    .popup-content {
+        background: #f1f1f1; /* Light gray background for the popup */
+        border-radius: 12px;
+        padding: 25px;
+        width: 400px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        position: relative;
+    }
+
+    .popup-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #007b00; /* Green text color for the title */
+    }
+
+    /* Form and Input styles */
+    .form-label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+        text-align: left;
+        color: #555555;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cccccc;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+        .form-control:focus {
+            border-color: #007b00; /* Green border on focus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 0, 0.4); /* Green glow */
+        }
+
+    /* Popup Actions (Buttons) */
+    .popup-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .btn-cancel {
+        background-color: #f44336; /* Red button */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .btn-cancel:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
+    .btn-save {
+        background-color: #28a745; /* Green button */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
 
 </style>
 
@@ -155,8 +443,17 @@
 @code {
 
     private List<Stadium> Stadiums = new();
-    private bool ShowModal = false;
+        private bool ShowModal = false, showPopup=false;
 
+        private void OpenPopup()
+        {
+            showPopup = true;
+        }
+
+        private void ClosePopup()
+        {
+            showPopup = false;
+        }
 
     [Inject] public IStadiumService StadiumService { get; set; }
     protected override async Task OnInitializedAsync()

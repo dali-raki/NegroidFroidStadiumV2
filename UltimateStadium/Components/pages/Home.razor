@@ -3,29 +3,30 @@
 @using UltimateStadium.Services
 @rendermode InteractiveServer
 
+<h3 class="text-center hero-title">Reservation</h3>
+
 <div class="container py-4">
     <div class="row g-4">
         @foreach (var stadium in stadiums)
         {
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm">
+                <div class="card h-100 shadow-lg stadium-card">
                     <img src="/Image/staduim.jpg" class="card-img-top" alt="@stadium.stadiumName">
                     <div class="card-body">
                         <h5 class="card-title">@stadium.stadiumName</h5>
                         <p class="card-text text-muted">@stadium.stadiumPlace</p>
                         <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
-                        @if (@stadium.isRented)
+                        @if (stadium.isRented)
                         {
-                            <p>Stadium Reserved</p>
+                            <p class="text-danger">Stadium Reserved</p>
                         }
                         else
                         {
-                            <p>Stadium Available</p> 
+                            <p class="text-success">Stadium Available</p>
                         }
-                       
                     </div>
-                    <div class="card-footer text-center bg-white">
-                        <button @onclick="OpenPopup2" class="btn-primary">Reserve Stadium</button>
+                    <div class="card-footer text-center">
+                        <button @onclick="OpenPopup2" class="btn-reserve">Reserve Stadium</button>
                     </div>
                 </div>
             </div>
@@ -33,16 +34,16 @@
     </div>
 </div>
 
-
-
 <form>
     <div class="popup" style="display:@(showPopup2 ? "flex" : "none")">
         <div class="popup-content">
-            <h5 class="popup-title">Edit Stadium</h5>
-            <label class="form-label">Select Date with time</label>
+            <div class="popup-header">
+                <h5 class="popup-title">Edit Stadium</h5>
+            </div>
+            <label class="form-label">Select Date with Time</label>
             <input type="datetime-local" class="form-control" />
 
-            <label class="form-label">Price Totale</label>
+            <label class="form-label">Price Total</label>
             <input type="number" class="form-control" disabled />
 
             <div class="popup-actions">
@@ -52,122 +53,170 @@
         </div>
     </div>
 </form>
+
 <style>
-    /* Overlay for Popup */
+    /* General Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f1f8f6; /* Light background for a fresh look */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Hero Section */
+    .hero-title {
+        font-size: 2rem; /* Reduced font size */
+        font-weight: bold;
+        color: #fff;
+        background: #007b00; /* Green grass-like background */
+        padding: 50px 0; /* Reduced padding */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Football field vibe */
+    }
+
+    /* Reservation Section */
+    .stadium-card {
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        border: none;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+        .stadium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stadium-card img {
+            border-radius: 12px;
+            object-fit: cover;
+            height: 180px;
+        }
+
+        .stadium-card h5 {
+            color: #007b00;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .stadium-card p {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .stadium-card .btn-reserve {
+            background-color: #28a745;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .stadium-card .btn-reserve:hover {
+                background-color: #218838;
+            }
+
+    .card-footer {
+        padding: 10px;
+        border-top: 2px solid #007b00;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-radius: 0 0 12px 12px;
+    }
+
+    /* Popup Styles */
     .popup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        background: rgba(0, 0, 0, 0.6);
         z-index: 1000;
     }
 
-    /* Popup Content */
     .popup-content {
-        background: #ffffff;
+        background-color: #fff;
+        padding: 30px;
         border-radius: 12px;
-        padding: 25px;
-        width: 400px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        position: relative;
-    }
-
-    /* Popup Title */
-    .popup-title {
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        color: #333333;
-    }
-
-    /* Form Labels */
-    .form-label {
-        display: block;
-        font-size: 14px;
-        margin-bottom: 8px;
-        text-align: left;
-        color: #555555;
-    }
-
-    /* Input Styling */
-    .form-control {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 450px;
         width: 100%;
-        padding: 10px;
-        border: 1px solid #cccccc;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        font-size: 14px;
     }
 
-        .form-control:focus {
-            border-color: #4CAF50;
-            outline: none;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+    /* Popup Header */
+    .popup-header {
+        background-color: #007b00; /* Green background for header */
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+    }
+
+    .popup-title {
+        font-size: 1.6rem;
+    }
+
+    .form-label {
+        color: #495057;
+        font-weight: 500;
+    }
+
+    .popup-actions button {
+        font-weight: bold;
+        border-radius: 8px;
+        padding: 10px 20px;
+        margin: 10px;
+        cursor: pointer;
+        border:none;
+    }
+
+    .btn-cancel {
+        background-color: #ffc107; /* Yellow background for Cancel */
+        color: white;
+    }
+
+    .btn-save {
+        background-color: #28a745; /* Green background for Save */
+        color: white;
+    }
+
+    .footer {
+        background-color: #007b00;
+        color: #fff;
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 20px 0;
+        margin-top: 50px;
+    }
+
+        .footer p {
+            margin: 0;
         }
 
-    /* Popup Actions */
     .popup-actions {
         display: flex;
         justify-content: space-between;
-        gap: 10px;
     }
-
-    /* Buttons */
-    .btn-cancel {
-        background-color: #f44336;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-        .btn-cancel:hover {
-            background-color: #d32f2f;
-        }
-
-    .btn-save {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-        .btn-save:hover {
-            background-color: #388E3C;
-        }
-
-    /* Open Button */
-    .btn-open {
-        background-color: #2196F3;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-        .btn-open:hover {
-            background-color: #1976D2;
-        }
 </style>
+
 @code {
     [Inject] public IStadiumService StadiumService { get; set; }
     [Inject] public IDashBoardService dashBoardService { get; set; }
 
     private bool showPopup2 = false;
     List<Stadium> stadiums = new List<Stadium>();
+
     protected override async Task OnInitializedAsync()
     {
         stadiums = await StadiumService.getAllStadiums();

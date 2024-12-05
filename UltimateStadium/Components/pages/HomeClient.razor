@@ -1,0 +1,216 @@
+﻿@page "/"
+<div class="football-homepage">
+    <!-- Hero Section -->
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1>Welcome to Ultimate Stadium</h1>
+            <p>Book your favorite stadium for football, basketball, or tennis events.</p>
+            <a href="/DashBoard" class="btn btn-primary btn-lg">Go to Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Information Section -->
+    <section class="info-section py-5 text-center">
+        <div class="container">
+            <h2 class="mb-4">Choose Your Stadium</h2>
+            <p>Whether you're into football, basketball, or tennis, Ultimate Stadium has something for you. Explore the best venues for your favorite sports, equipped with top-tier facilities and all the features you need.</p>
+        </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section class="reservation py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Reserve Your Stadium</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stadium-card">
+                        <i class="fa-solid fa-futbol icon"></i>
+                        <h3>Football Stadium</h3>
+                        <p>Reserve our professional football stadium for your matches or events. Large capacity and premium facilities await.</p>
+                        <a href="/Reserve?stadium=football" class="btn btn-primary">Reserve Now</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stadium-card">
+                        <i class="fa-solid fa-basketball-ball icon"></i>
+                        <h3>Basketball Court</h3>
+                        <p>Book the basketball court for your next tournament or practice session. Top-quality courts for every player.</p>
+                        <a href="/Reserve?stadium=basketball" class="btn btn-primary">Reserve Now</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stadium-card">
+                        <i class="fa-solid fa-table-tennis icon"></i>
+                        <h3>Tennis Court</h3>
+                        <p>Reserve the tennis court for matches, training, or casual play. Perfect for both professionals and enthusiasts.</p>
+                        <a href="/Reserve?stadium=tennis" class="btn btn-primary">Reserve Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section py-5 text-center" style="background-color: #f7f7f7;">
+        <div class="container">
+            <h2 class="mb-4">Our Achievements</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>100+</h3>
+                    <p>Successful Events</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>50+</h3>
+                    <p>Venues Available</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>5000+</h3>
+                    <p>Players Served</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4 text-center">
+        <div class="container">
+            <p>&copy; 2024 Ultimate Stadium. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f0f5f0; /* Subtle grass field background tone */
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background: #007b00; /* Green grass-like background */
+        color: #fff;
+        padding: 100px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Football field vibe */
+    }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            margin-bottom: 25px;
+        }
+
+        .hero-section .btn {
+            background-color: #ffc107; /* Bright yellow like a referee whistle */
+            color: #212529;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+            .hero-section .btn:hover {
+                background-color: #ffdd57;
+                color: #000;
+            }
+
+    /* Information Section */
+    .info-section {
+        padding: 50px 0;
+        background-color: #f7f7f7;
+    }
+
+        .info-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #007b00;
+        }
+
+        .info-section p {
+            color: #495057;
+            font-size: 1.125rem;
+        }
+
+    /* Reservation Section */
+    .reservation {
+        padding: 50px 0;
+    }
+
+    .stadium-card {
+        background: #e8f5e9; /* Light green card */
+        border: 2px solid #007b00; /* Dark green border */
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .stadium-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 123, 0, 0.2);
+        }
+
+        .stadium-card h3 {
+            color: #007b00;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .stadium-card p {
+            color: #495057;
+        }
+
+        .stadium-card .icon {
+            font-size: 4rem;
+            color: #ffc107; /* Gold icon to symbolize trophies */
+        }
+
+        .stadium-card .btn {
+            background-color: #007b00;
+            color: #fff;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 50px;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+            .stadium-card .btn:hover {
+                background-color: #005600;
+            }
+
+    /* Stats Section */
+    .stats-section {
+        background-color: #f7f7f7;
+    }
+
+        .stats-section h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .stats-section .row h3 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #007b00;
+        }
+
+    /* Footer */
+    .footer {
+        background: #007b00; /* Dark green field-like background */
+        color: #fff;
+        font-size: 0.9rem;
+    }
+
+        .footer p {
+            margin: 0;
+        }
+</style>

@@ -17,6 +17,7 @@ public class StadiumStorage : IStadiumStorage
     private readonly string selectAllStadiumsQuery="select * from stadiums";
     private readonly string insertNewStadiumQuery="insert into stadiums (stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved) values (@stadiumId,@stadiumName,@stadiumPlace,@stadiumPrice,@isReserved)";
     private readonly string deleteStadiumByIdQuery = "DELETE FROM stadiums WHERE stadiumId = @stadiumId;";
+    private readonly string selectStadiumByIdQuery = "SELECT * from stadiums WHERE stadiumId = @StadiumId";
     public async Task<List<Stadium>> selectAllStadiums()
     {
         List<Stadium> stadiums = new List<Stadium>();
