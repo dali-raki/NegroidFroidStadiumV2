@@ -1,49 +1,29 @@
-@page "/DashBoard"
+@page "/DashBoarda"
 @using UltimateStadium.Services
 @inject IDashBoardService dashBoard
+
+<h3 class="text-center hero-title">Dashboard</h3>
 <div class="container text-center">
     <div class="row">
         <div class="col">
-
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="stadium-card mb-3">
                 <div class="row g-0">
-                    <div class="col-md-4">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Users</h5>
-                            <h1>@usersCount</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="col">
-    
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
+                    <div class="col-md-4 icon-container">
                         <i class="fa-solid fa-user-secret"></i>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">Manager</h5>
+                            <h5 class="card-title">Total Money</h5>
                             <h1>@managerCount</h1>
                         </div>
                     </div>
                 </div>
             </div>
-   
         </div>
         <div class="col">
-
-
-       
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="stadium-card mb-3">
                 <div class="row g-0">
-                    <div class="col-md-4">
+                    <div class="col-md-4 icon-container">
                         <i class="fa-regular fa-futbol"></i>
                     </div>
                     <div class="col-md-8">
@@ -54,88 +34,190 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
+<!--==========================================================================-->
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-center" style="height: 400px;">
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-center" style="height: 400px;">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["Users", "Manager"],
+            datasets: [{
+                label: '# of Votes',
+                data: [@usersCount, @managerCount],
+                borderWidth: 1,
+                backgroundColor: ['#4caf50', '#ff9800'],
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                }
+            }
+        }
+    });
+</script>
+<script>
+    const ctx2 = document.getElementById('myChart2');
+
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+                label: '# of Votes',
+                data: [10, 15, 8, 20, 12, 18, 5, 25, 14, 9, 7, 22],
+                backgroundColor: "#4caf50",
+                borderColor: "#ffc107",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 
 <style>
-    .container {
-    margin-top: 50px;
-}
+    /* General Styles */
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f0f5f0; /* Subtle grass field background tone */
+    }
 
-.row {
-    justify-content: center; /* Centers the row items */
-}
+    /* Hero Section */
+    .hero-title {
+        font-size: 2rem; /* Reduced font size */
+        font-weight: bold;
+        color: #fff;
+        background: #007b00; /* Green grass-like background */
+        padding: 50px 0; /* Reduced padding */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Football field vibe */
+    }
 
-.card {
-    background-color: #f8f9fa; /* Light gray background */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border: none; /* Removes default border */
-    border-radius: 10px; /* Smooth corners */
-    transition: transform 0.3s, box-shadow 0.3s; /* Hover effect */
-}
+    /* Card Styles */
+    .stadium-card {
+        background: #e8f5e9; /* Light green card */
+        border: 2px solid #007b00; /* Dark green border */
+        border-radius: 10px; /* Slightly smaller radius */
+        padding: 10px; /* Reduced padding */
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Reduced shadow */
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-.card:hover {
-    transform: translateY(-5px); /* Slightly elevate card */
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
-}
+        .stadium-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 123, 0, 0.2);
+        }
 
-.card-title {
-    font-weight: bold;
-    color: #343a40; /* Dark gray for readability */
-}
+        .stadium-card h3 {
+            color: #007b00;
+            font-weight: bold;
+            margin-top: 10px; /* Reduced margin */
+        }
 
-.card-body h1 {
-    font-size: 3rem; /* Large font size for numbers */
-    color: #007bff; /* Primary blue */
-    font-weight: bold;
-    margin-top: 10px;
-}
+        .stadium-card p {
+            color: #495057;
+        }
 
-i {
-    font-size: 3rem; /* Icon size */
-    color: #007bff; /* Matches primary blue */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%; /* Ensures alignment within the column */
-}
+    .fa-solid.fa-user-secret,.fa-regular.fa-futbol {
+            font-size: 3.5rem; /* Smaller icon size */
+            color: #ffc107; /* Gold icon to symbolize trophies */
+        }
 
-.col-md-4 {
-    padding-top:11vh;
-    background-color: #e9ecef; /* Light gray for icon background */
-    border-radius: 10px 0 0 10px; /* Matches card corner rounding */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    /* Card Title Styles */
+    .card-title {
+        font-weight: 600;
+        color: #212529;
+        font-size: 1rem; /* Smaller font size */
+    }
 
-.col-md-8 {
-    padding: 20px; /* Adds padding for the text content */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+    /* Icon Styles */
+    i {
+        font-size: 2.5rem; /* Smaller icon size */
+        color: #1d72b8; /* Matches the accent blue */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
 
-h5 {
-    margin-bottom: 0; /* Removes unnecessary space */
-}
+    /* Icon Container Styles */
+    .icon-container {
+        /* Soft blue for icon background */
+        border-radius: 8px 0 0 8px; /* Matches card corner rounding */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 12%; /* Reduced padding */
+    }
 
-}
+    .col-md-8 {
+        padding: 15px; /* Reduced padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    h5 {
+        margin-bottom: 0;
+        font-size: 0.9rem; /* Smaller font size */
+        color: #495057; /* Neutral gray */
+    }
+
+    /* Chart Card Styles */
+    .card-body {
+        padding: 15px; /* Reduced padding */
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
 
 </style>
+
 @code {
 
     private int managerCount = 0, usersCount = 0, stadiumsCount = 0;
 
-    
     protected override async Task OnInitializedAsync()
     {
-       managerCount= await dashBoard.getManagersCount();
-       usersCount= await dashBoard.getUsersCount();
-       stadiumsCount = await dashBoard.getStadiumsCount();
+        managerCount = await dashBoard.getManagersCount();
+        usersCount = await dashBoard.getUsersCount();
+        stadiumsCount = await dashBoard.getStadiumsCount();
     }
-
 }
