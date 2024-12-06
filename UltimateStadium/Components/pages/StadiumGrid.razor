@@ -39,7 +39,7 @@
                         <td>@stadium.stadiumRentalPrice</td>
                         <td>
                             <button @onclick="() => DeleteStadium(Guid.Parse(stadium.stadiumId.ToString()))"><i class="fa-solid fa-trash"></i></button>
-                            <button @onclick="OpenPopup" class="btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button @onclick="() => OpenPopup2(stadium)" class="btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                             
                         </td>
                     </tr>
@@ -68,7 +68,18 @@
     </div>
 </form>
 
-    <style >
+
+
+
+
+//
+
+//
+
+
+//
+
+<style >
    /* General Styles */
 body {
     font-family: 'Roboto', sans-serif;
@@ -436,23 +447,44 @@ i {
         }
 
 </style>
-
-<!-- Add Stadium Modal -->
 <AddStadiumModal Show="@ShowModal" OnClose="CloseAddStadiumModal" OnSave="AddNewStadium" />
+<UpdateStadiumModal Show="@showModal2" OnClose="CloseAddStadiumModal" stadium="updatedStadium"   />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @code {
 
     private List<Stadium> Stadiums = new();
-        private bool ShowModal = false, showPopup=false;
-
+        private bool ShowModal = false,showModal2=false, showPopup=false;
+        private Stadium updatedStadium;
         private void OpenPopup()
         {
             showPopup = true;
+        }
+        
+        private void OpenPopup2(Stadium stadium)
+        {
+            updatedStadium = stadium;
+            showModal2 = true;
         }
 
         private void ClosePopup()
         {
             showPopup = false;
+            showModal2 = false;
         }
 
     [Inject] public IStadiumService StadiumService { get; set; }
@@ -480,14 +512,12 @@ i {
     {
         ShowModal = show; // Hide the modal
         Stadiums = await StadiumStorage.selectAllStadiums();
+        showModal2 = false;//
     }
 
     private async Task AddNewStadium(Stadium stadium)
     {
          Stadiums.Add(stadium); // Add to local list
-
-        
-
         StateHasChanged(); // Refresh the UI
     }
 
