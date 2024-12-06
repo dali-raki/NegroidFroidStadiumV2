@@ -1,11 +1,6 @@
 USE [db_aafb69_admin]
 GO
-/****** Object:  User [iage]    Script Date: 12/6/2024 17:24:44 ******/
-CREATE USER [iage] FOR LOGIN [iage] WITH DEFAULT_SCHEMA=[dbo]
-GO
-ALTER ROLE [db_owner] ADD MEMBER [iage]
-GO
-/****** Object:  Table [dbo].[Favorite]    Script Date: 12/6/2024 17:24:44 ******/
+/****** Object:  Table [dbo].[Favorite]    Script Date: 12/6/2024 22:54:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,7 +10,40 @@ CREATE TABLE [dbo].[Favorite](
 	[idstadium] [varchar](10) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[stadiums]    Script Date: 12/6/2024 17:24:44 ******/
+/****** Object:  Table [dbo].[managerIncome]    Script Date: 12/6/2024 22:54:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[managerIncome](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[userId] [varchar](200) NULL,
+	[income] [decimal](18, 0) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Reservation]    Script Date: 12/6/2024 22:54:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Reservation](
+	[IdReservation] [varchar](200) NOT NULL,
+	[IdUser] [varchar](200) NOT NULL,
+	[IdStadium] [varchar](200) NOT NULL,
+	[ReservationDate] [date] NOT NULL,
+	[StartTime] [time](7) NOT NULL,
+	[EndTime] [time](7) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdReservation] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[stadiums]    Script Date: 12/6/2024 22:54:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +57,7 @@ CREATE TABLE [dbo].[stadiums](
 	[fa] [varchar](50) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[users]    Script Date: 12/6/2024 17:24:44 ******/
+/****** Object:  Table [dbo].[users]    Script Date: 12/6/2024 22:54:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -45,29 +73,40 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'17ea9a8f-897c-43de-94e3-7442c319f900', N'Ferrrr', N'BB', 3000, 0, N'1')
-GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'8ca28763-6a83-4aed-8a55-6739991cf757', N'Pancreatic', N'tolga', 3000, 1, N'0')
-GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'ca17c0ee-2528-44a3-996a-7f692375d47c', N'biskra', N'biskra1024', 2000, 0, N'0')
-GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'4de7cdb1-be0e-4314-bf88-d5195dcfd67e', N'Pancreatic', N'tolga', 3000, 0, N'0')
-GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'16712e4a-cadb-44a4-912e-e51ae2adf6a0', N's', N's', 1, 0, N'0')
-GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'5488f8cf-6466-4a82-886f-f1f15636313d', N'sss', N'tolga', 3000, 0, N'0')
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'9f3b52c4-9c04-46f5-a4c7-2cb761925819', N'Feee', N'Bunny', 100, 0, N'1')
 GO
 INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'187A3A89-C45D-40AA-B534-852D2F710773', N'RD@gmail.com', N'123', 3)
 GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'297b39c7-f1cc-4e8f-9e25-c61ea60e2d90', N'tg@gmail.com', N'ff', 3)
+GO
 INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'52FDF3C1-7ADA-48A3-A80A-79D2F9B424F9', N'raki@gmail.com', N'123', 2)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'777c4f3b-2ed7-42a5-95bf-518b0990915e', N'j@gmail.com', N'ff', 3)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'9e73fcca-8874-401e-a46e-694982925479', N'tt@gmail.com', N'ff', 2)
 GO
 INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'a81ac51d-91d0-4deb-a54a-ae2a906e3b54', N'haithem@gmail.com', N'123', 1)
 GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'ad1bd532-ee05-4a11-8d49-004fbda7a4ea', N'create@gmail.com', N'aa', 2)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'c8ccd624-4c6e-4a4f-bed4-3c2e6996bd6b', N'tay@gmail.com', N'ff', 3)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'c91f5fcf-ad88-404b-b452-3b9ef2c61bb6', N'ui@gmail.com', N'ff', 3)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'f59ef10a-3335-4e9f-8e27-1d03a5dab47e', N'an@gmail.com', N'hh', 3)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'f9f2e801-76ba-49fe-a9a7-30825880e63d', N'to@gmail.com', N'ff', 3)
+GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [uniqueEmail]    Script Date: 12/6/2024 17:24:44 ******/
+/****** Object:  Index [uniqueEmail]    Script Date: 12/6/2024 22:54:13 ******/
 ALTER TABLE [dbo].[users] ADD  CONSTRAINT [uniqueEmail] UNIQUE NONCLUSTERED 
 (
 	[email] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[managerIncome]  WITH CHECK ADD  CONSTRAINT [fk_userId] FOREIGN KEY([userId])
+REFERENCES [dbo].[users] ([id])
+GO
+ALTER TABLE [dbo].[managerIncome] CHECK CONSTRAINT [fk_userId]
 GO

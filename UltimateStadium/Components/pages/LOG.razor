@@ -1,0 +1,103 @@
+@page "/l"
+@using BlazorApp1.Domain
+@using Microsoft.AspNetCore.Authorization
+@using UltimateStadium.Services
+@inject NavigationManager Navigation
+@inject IUserService UserService
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<h1>Login</h1>
+<div>
+    <input type="email" @bind="email" placeholder="Email Address" />
+    <input type="password" @bind="password" placeholder="Password" />
+            
+    <button type="button" @onclick="@log">Login</button>
+    <a href="#" class="forgot-password">Forgot Password?</a>
+</div>
+
+@code {
+    string email { get; set; }
+    string password { get; set; }
+    string newEmail { get; set; }
+    string newPassword { get; set; }
+    UserRole newRole { get; set; } = UserRole.Client;
+
+    bool isLoginFailed = false;
+    bool showCreateAccountForm = false; 
+
+   
+    public void log()
+    { 
+       
+        Console.WriteLine("Login attempt");
+        try
+        {
+            var userRole =  UserService.AuthenticateUser(email, password);
+
+            /*if (userRole != null)
+            {
+                switch (userRole)
+                {
+                    case UserRole.Admin:
+                        Navigation.NavigateTo("/DashBoarda");
+                        break;
+                    case UserRole.Manager:
+                        Navigation.NavigateTo("/DashBoardm");
+                        break;
+                    case UserRole.Client:
+                        Navigation.NavigateTo("/client");
+                        break;
+                    default:
+                        Navigation.NavigateTo("/E");
+                        break;
+                }
+                Console.WriteLine("Login successful");
+            }
+            else
+            {
+                isLoginFailed = true; 
+            }*/
+        }
+        catch (Exception ex)
+        {
+            isLoginFailed = true;
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+  
+    private async Task cre()
+    {
+        try
+        {
+            bool isCreated = await UserService.CreateAccount(newEmail, newPassword, newRole);
+            Console.WriteLine("Account creation attempt");
+            if (isCreated)
+            {
+                Navigation.NavigateTo("/"); 
+            }
+            else
+            {
+                Console.WriteLine("Account creation failed.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void ToggleCreateAccountForm()
+    {
+        Console.WriteLine("aa");
+        showCreateAccountForm = true; // Show the account creation form and hide the login form
+    }
+
+    private void ShowLoginForm()
+    {
+        Console.WriteLine("aa");
+        showCreateAccountForm = false; // Hide the account creation form and show the login form
+    }
+}
+

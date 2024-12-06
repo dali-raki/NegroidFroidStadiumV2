@@ -9,8 +9,23 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<IStadiumService, StadiumService>();
 builder.Services.AddScoped<IStadiumStorage, StadiumStorage>();
+builder.Services.AddScoped<IUserStorage, UserStorage>();
 builder.Services.AddScoped<IDashBoardStorage, DashBoardStorage>();
 builder.Services.AddScoped<IDashBoardService, DashBoardService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.LoginPath = "/login"; 
+        options.AccessDeniedPath = "/access-denied"; 
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("EditorPolicy", policy => policy.RequireClaim("Department", "Editors"));
+});
 
 var app = builder.Build();
 
