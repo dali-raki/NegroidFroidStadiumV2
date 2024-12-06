@@ -1,6 +1,21 @@
 USE [db_aafb69_admin]
 GO
-/****** Object:  Table [dbo].[stadiums]    Script Date: 12/6/2024 15:14:02 ******/
+/****** Object:  User [iage]    Script Date: 12/6/2024 17:24:44 ******/
+CREATE USER [iage] FOR LOGIN [iage] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [iage]
+GO
+/****** Object:  Table [dbo].[Favorite]    Script Date: 12/6/2024 17:24:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Favorite](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[idstadium] [varchar](10) NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[stadiums]    Script Date: 12/6/2024 17:24:44 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,10 +25,11 @@ CREATE TABLE [dbo].[stadiums](
 	[stadiumName] [nvarchar](100) NULL,
 	[stadiumPlace] [nvarchar](100) NULL,
 	[stadiumPrice] [float] NULL,
-	[isReserved] [tinyint] NULL
+	[isReserved] [tinyint] NULL,
+	[fa] [varchar](50) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[users]    Script Date: 12/6/2024 15:14:03 ******/
+/****** Object:  Table [dbo].[users]    Script Date: 12/6/2024 17:24:44 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,17 +45,17 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'17ea9a8f-897c-43de-94e3-7442c319f900', N'Ferrrr', N'BB', 3000, 0)
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'17ea9a8f-897c-43de-94e3-7442c319f900', N'Ferrrr', N'BB', 3000, 0, N'1')
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'8ca28763-6a83-4aed-8a55-6739991cf757', N'Pancreatic', N'tolga', 3000, 1)
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'8ca28763-6a83-4aed-8a55-6739991cf757', N'Pancreatic', N'tolga', 3000, 1, N'0')
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'ca17c0ee-2528-44a3-996a-7f692375d47c', N'biskra', N'biskra1024', 2000, 0)
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'ca17c0ee-2528-44a3-996a-7f692375d47c', N'biskra', N'biskra1024', 2000, 0, N'0')
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'4de7cdb1-be0e-4314-bf88-d5195dcfd67e', N'Pancreatic', N'tolga', 3000, 0)
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'4de7cdb1-be0e-4314-bf88-d5195dcfd67e', N'Pancreatic', N'tolga', 3000, 0, N'0')
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'16712e4a-cadb-44a4-912e-e51ae2adf6a0', N's', N's', 1, 0)
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'16712e4a-cadb-44a4-912e-e51ae2adf6a0', N's', N's', 1, 0, N'0')
 GO
-INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'5488f8cf-6466-4a82-886f-f1f15636313d', N'sss', N'tolga', 3000, 0)
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved], [fa]) VALUES (N'5488f8cf-6466-4a82-886f-f1f15636313d', N'sss', N'tolga', 3000, 0, N'0')
 GO
 INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'187A3A89-C45D-40AA-B534-852D2F710773', N'RD@gmail.com', N'123', 3)
 GO
@@ -49,7 +65,7 @@ INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'a81ac51d-91d0
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [uniqueEmail]    Script Date: 12/6/2024 15:14:07 ******/
+/****** Object:  Index [uniqueEmail]    Script Date: 12/6/2024 17:24:44 ******/
 ALTER TABLE [dbo].[users] ADD  CONSTRAINT [uniqueEmail] UNIQUE NONCLUSTERED 
 (
 	[email] ASC
