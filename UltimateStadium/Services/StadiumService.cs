@@ -44,4 +44,14 @@ public class StadiumService : IStadiumService
         }
         catch (Exception e) { }
     }
+
+    public async Task<bool> reserveStadium(DateTime from , DateTime to,double price,string stadiumId)
+    {
+        return await stadiumStorage.reserveStadium(from, to, price, stadiumId);
+    }
+
+    public async Task<bool> updatestadium(string stadiumId, Stadium newStadium)
+    {
+        return await stadiumStorage.updatestadium(stadiumId,newStadium);
+    }
 }

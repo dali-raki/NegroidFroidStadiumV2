@@ -1,4 +1,5 @@
-﻿@page "/login"
+﻿@page "/s"
+@using UltimateStadium.Services.UserServie
 @rendermode InteractiveServer
 @inject NavigationManager man
 <div class="form-container">
@@ -15,7 +16,7 @@
 </div>
 
 <style>
-        /* General Reset */
+        
         body, html {
             margin: 0;
             padding: 0;
@@ -109,25 +110,30 @@
     </style>
     
     
-    
+        
     
     @code
     {
+        [Inject] IUserService userService { get; set; }
         string email { get; set; } = "";
         string passsword { get; set; } = "";
 
 
-        private void login()
+        private async Task login()
         {
-            man.NavigateTo("/stadium-grid");
-            /*if (email.Equals( "a@gmail.com") && passsword.Equals("a"))
-            {
-                man.NavigateTo("/Home");
-            }
-            else if (email.Equals( "b@gmail.com") && passsword.Equals( "b"))
-            {
-                
-            }*/
-            
+
+           var user= await userService.login(email, passsword);
+           if (user.role == 1)
+           {
+               man.NavigateTo("/admin");
+           }
+           else if (user.role == 2)
+           {
+               man.NavigateTo("/manager"); 
+           }
+           else if (user.role == 3)
+           {
+               man.NavigateTo("/home"); 
+           }
         }
     }

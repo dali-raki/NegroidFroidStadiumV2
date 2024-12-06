@@ -12,12 +12,13 @@ public class StadiumStorage : IStadiumStorage
         connectionString = configuration.GetConnectionString("Negroid");
     }
 
-    private readonly string connectionString;
-    
+    private readonly string connectionString;   
     private readonly string selectAllStadiumsQuery="select * from stadiums";
     private readonly string insertNewStadiumQuery="insert into stadiums (stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved) values (@stadiumId,@stadiumName,@stadiumPlace,@stadiumPrice,@isReserved)";
     private readonly string deleteStadiumByIdQuery = "DELETE FROM stadiums WHERE stadiumId = @stadiumId;";
-    private readonly string selectStadiumByIdQuery = "SELECT * from stadiums WHERE stadiumId = @StadiumId";
+    private readonly string reserveStadiumQuery = "update stadiums set isReserved=true where stadiumId=@stadiumId";
+    private readonly string updateStadiumQuery = "update stadiums set stadiumName=@stadiumName,stadiumPlace=@stadiumPlace,stadiumPrice=@stadiumPrice,isReserved=@isReserved where stadiumId=@stadiumId";
+    
     public async Task<List<Stadium>> selectAllStadiums()
     {
         List<Stadium> stadiums = new List<Stadium>();
@@ -101,7 +102,43 @@ public class StadiumStorage : IStadiumStorage
                
             }
 
+            public async Task<bool> reserveStadium(DateTime dateTimeFrom, DateTime dateTimeTo, double fullPrice,string stadiumId)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        SqlCommand command = new SqlCommand(reserveStadiumQuery, connection);
+                        command.Parameters.AddWithValue("@stadiumId", stadiumId);
+                       return  await command.ExecuteNonQueryAsync()>0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
 
-       
-    }
+            public async Task<bool> updatestadium(string stadiumId, Stadium newStadium)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        SqlCommand command = new SqlCommand(updateStadiumQuery, connection);
+                        await connection.OpenAsync();
+                        command.Parameters.AddWithValue("stadiumName",newStadium.stadiumName);
+                        command.Parameters.AddWithValue("stadiumPlace",newStadium.stadiumPlace);
+                        command.Parameters.AddWithValue("stadiumPrice",newStadium.stadiumRentalPrice);
+                        command.Parameters.AddWithValue("isReserved",newStadium.isRented);
+                        command.Parameters.AddWithValue("stadiumId",stadiumId);
+                        return await command.ExecuteNonQueryAsync()>0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+}
     

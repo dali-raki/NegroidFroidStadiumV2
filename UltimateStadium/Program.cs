@@ -1,6 +1,8 @@
 using UltimateStadium.Components;
 using UltimateStadium.Services;
+using UltimateStadium.Services.UserServie;
 using UltimateStadium.Storage;
+using UltimateStadium.Storage.UserStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddScoped<IStadiumService, StadiumService>();
 builder.Services.AddScoped<IStadiumStorage, StadiumStorage>();
 builder.Services.AddScoped<IDashBoardStorage, DashBoardStorage>();
 builder.Services.AddScoped<IDashBoardService, DashBoardService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserStorage, UserStorage>();
 
 var app = builder.Build();
 
