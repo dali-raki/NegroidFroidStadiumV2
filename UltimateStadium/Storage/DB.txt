@@ -1,0 +1,57 @@
+USE [db_aafb69_admin]
+GO
+/****** Object:  Table [dbo].[stadiums]    Script Date: 12/6/2024 15:14:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[stadiums](
+	[stadiumId] [varchar](200) NULL,
+	[stadiumName] [nvarchar](100) NULL,
+	[stadiumPlace] [nvarchar](100) NULL,
+	[stadiumPrice] [float] NULL,
+	[isReserved] [tinyint] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[users]    Script Date: 12/6/2024 15:14:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[users](
+	[id] [varchar](200) NOT NULL,
+	[email] [varchar](50) NULL,
+	[password] [varchar](200) NULL,
+	[role] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'17ea9a8f-897c-43de-94e3-7442c319f900', N'Ferrrr', N'BB', 3000, 0)
+GO
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'8ca28763-6a83-4aed-8a55-6739991cf757', N'Pancreatic', N'tolga', 3000, 1)
+GO
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'ca17c0ee-2528-44a3-996a-7f692375d47c', N'biskra', N'biskra1024', 2000, 0)
+GO
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'4de7cdb1-be0e-4314-bf88-d5195dcfd67e', N'Pancreatic', N'tolga', 3000, 0)
+GO
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'16712e4a-cadb-44a4-912e-e51ae2adf6a0', N's', N's', 1, 0)
+GO
+INSERT [dbo].[stadiums] ([stadiumId], [stadiumName], [stadiumPlace], [stadiumPrice], [isReserved]) VALUES (N'5488f8cf-6466-4a82-886f-f1f15636313d', N'sss', N'tolga', 3000, 0)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'187A3A89-C45D-40AA-B534-852D2F710773', N'RD@gmail.com', N'123', 3)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'52FDF3C1-7ADA-48A3-A80A-79D2F9B424F9', N'raki@gmail.com', N'123', 2)
+GO
+INSERT [dbo].[users] ([id], [email], [password], [role]) VALUES (N'a81ac51d-91d0-4deb-a54a-ae2a906e3b54', N'haithem@gmail.com', N'123', 1)
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [uniqueEmail]    Script Date: 12/6/2024 15:14:07 ******/
+ALTER TABLE [dbo].[users] ADD  CONSTRAINT [uniqueEmail] UNIQUE NONCLUSTERED 
+(
+	[email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO

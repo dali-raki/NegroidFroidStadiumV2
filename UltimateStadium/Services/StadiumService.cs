@@ -44,4 +44,27 @@ public class StadiumService : IStadiumService
         }
         catch (Exception e) { }
     }
+    public async Task<bool> Favorite(Guid stadiumId)
+    {
+        try
+        {
+            return await stadiumStorage.Favorite(stadiumId);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    public async Task<List<Stadium>> getfav()
+    {
+        try
+        {
+            return await stadiumStorage.GetFavoriteStadiums();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
 }

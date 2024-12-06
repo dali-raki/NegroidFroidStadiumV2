@@ -1,6 +1,7 @@
 @page "/Home"
 @using BlazorApp1.Domain
 @using UltimateStadium.Services
+
 @rendermode InteractiveServer
 
 <h3 class="text-center hero-title">Reservation</h3>
@@ -25,8 +26,14 @@
                             <p class="text-success">Stadium Available</p>
                         }
                     </div>
+                   
                     <div class="card-footer text-center">
                         <button @onclick="OpenPopup2" class="btn-reserve">Reserve Stadium</button>
+                        <!-- Favorite Button with Star Icon -->
+                        <button @onclick="() => Favorite(stadium.stadiumId)" class="btn-favorite">
+                            <i class="@((stadium.favorite == "1" ? "bi bi-star-fill" : "bi bi-star"))"></i>
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -208,6 +215,21 @@
         display: flex;
         justify-content: space-between;
     }
+    .btn-favorite {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 1.6rem;
+        color: #ffc107;
+    }
+
+    .btn-favorite:hover {
+        color: #ffcc00;
+    }
+
+    .bi-star, .bi-star-fill {
+        font-size: 1.6rem;
+    }
 </style>
 
 @code {
@@ -221,6 +243,7 @@
     {
         stadiums = await StadiumService.getAllStadiums();
     }
+   
 
     private void OpenPopup2()
     {
@@ -231,4 +254,12 @@
     {
         showPopup2 = false;
     }
+    private async Task Favorite(String stadiumId)
+    {
+        Guid a=Guid.Parse(stadiumId);
+        
+        await StadiumService.Favorite(a);
+        stadiums = await StadiumService.getAllStadiums();
+    }
+
 }
