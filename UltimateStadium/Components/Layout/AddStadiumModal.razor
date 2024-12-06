@@ -1,5 +1,6 @@
 @using BlazorApp1.Domain
 @using UltimateStadium.Services
+@using UltimateStadium.Domain
 
 @if (Show)
 {
@@ -28,6 +29,24 @@
                             Is Reserved
                         </label>
                     </div>
+                    <div class="mb-3">
+                        <label>Manager <span style="color: red">*</span></label>
+            @if (Users == null)
+            {
+                <p>Loading suppliers...</p>
+            }
+            else
+            {
+                @* @bind="stadium.idManager *@
+                <select >
+                    <option value="" disabled>--Select Manager--</option>
+                    @foreach (var Manager in Users)
+                    {
+                        <option value="@Manager.Id">@Manager.Email</option>
+                    }
+                </select>
+            }
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" @onclick="SaveStadium">Save</button>
@@ -42,11 +61,18 @@
     [Parameter] public bool Show { get; set; }
     [Parameter] public EventCallback<bool> OnClose { get; set; }
     [Parameter] public EventCallback<Stadium> OnSave { get; set; }
+    private List<User>? Users;
     [Inject] public IStadiumService StadiumService { get; set; }
+     [Inject] public IUserService userService { get; set; }
     private string keyframes;
     
     private Stadium stadium = new Stadium(null, null, null, 0.00, false, null);
 
+     protected override async Task OnInitializedAsync()
+    {
+        // Load stadiums from the database or storage
+        Users = await userService.GetAllManagers();
+    }
     private async Task SaveStadium()
     {
         // Call the service to add a new stadium and update the `stadium` object

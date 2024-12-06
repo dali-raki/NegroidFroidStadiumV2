@@ -1,8 +1,10 @@
 @page "/createS"
 @using BlazorApp1.Domain
+@using UltimateStadium.Domain
 @using UltimateStadium.Storage
+@using UltimateStadium.Components.Models.UsersModels
 @inject IStadiumStorage StadiumStorage
-@using  UltimateStadium.Services
+@using UltimateStadium.Services
 @using UltimateStadium.Components.Layout
 @rendermode InteractiveServer
 
@@ -60,6 +62,22 @@
             <label class="form-label">Location</label>
             <input type="text" class="form-control" placeholder="Location" />
 
+            <label>Manager <span style="color: red">*</span></label>
+            @if (Users == null)
+            {
+                <p>Loading suppliers...</p>
+            }
+            else
+            {
+                @* @bind="stadium.idManager *@
+                <select>
+                    <option value="" disabled>--Select Manager--</option>
+                    @foreach (var Manager in Users)
+                    {
+                        <option value="@Manager.Id">@Manager.Email</option>
+                    }
+                </select>
+            }
             <div class="popup-actions">
                 <button @onclick="ClosePopup" class="btn-cancel">Cancel</button>
                 <button @onclick="ClosePopup" class="btn-save">Save</button>
@@ -441,7 +459,7 @@ i {
 <AddStadiumModal Show="@ShowModal" OnClose="CloseAddStadiumModal" OnSave="AddNewStadium" />
 
 @code {
-
+    private List<User>? Users;
     private List<Stadium> Stadiums = new();
         private bool ShowModal = false, showPopup=false;
 
@@ -456,11 +474,12 @@ i {
         }
 
     [Inject] public IStadiumService StadiumService { get; set; }
+    [Inject] public IUserService userService { get; set; }
     protected override async Task OnInitializedAsync()
     {
         // Load stadiums from the database or storage
         Stadiums = await StadiumStorage.selectAllStadiums();
-
+        Users = await userService.GetAllManagers();
     }
 
     public async Task DeleteStadium(Guid id)

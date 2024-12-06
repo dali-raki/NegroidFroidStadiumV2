@@ -11,6 +11,8 @@ builder.Services.AddScoped<IStadiumService, StadiumService>();
 builder.Services.AddScoped<IStadiumStorage, StadiumStorage>();
 builder.Services.AddScoped<IDashBoardStorage, DashBoardStorage>();
 builder.Services.AddScoped<IDashBoardService, DashBoardService>();
+builder.Services.AddScoped<IUserStorage, UserStorage>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
