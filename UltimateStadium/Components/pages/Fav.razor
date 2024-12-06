@@ -1,0 +1,157 @@
+@page "/fav"
+@using BlazorApp1.Domain
+@using UltimateStadium.Services
+@using UltimateStadium.Storage
+@inject IStadiumService stadiumService
+@rendermode InteractiveServer
+
+<h3 class="text-center hero-title">Favorite Stadiums</h3>
+
+<div class="container py-4">
+    @if (stadiums == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (stadiums.Count == 0)
+    {
+        <p>No favorite stadiums found.</p>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var stadium in stadiums)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-lg stadium-card">
+                        <img src="/Image/staduim.jpg" class="card-img-top" alt="stadium image">
+                        <div class="card-body">
+                            <h5 class="card-title">@stadium.stadiumName</h5>
+                            <p class="card-text text-muted">@stadium.stadiumPlace</p>
+                            <p class="card-text fw-bold">$@stadium.stadiumRentalPrice</p>
+                            <p class="text-muted">
+                                <strong>Reserved:</strong> @(stadium.isRented ? "Yes" : "No")
+                            </p>
+                            <a href="@ass"
+                                target="_blank"
+                               class="btn btn-info">
+                                Show on Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<Stadium> stadiums;
+    string  ass = "https://www.google.com/maps/place/34%C2%B050'59.4%22N+5%C2%B043'24.3%22E/@34.849821,5.7208351,17z/data=!3m1!4b1!4m4!3m3!8m2!3d34.849821!4d5.72341?entry=ttu&g_ep=EgoyMDI0MTIwMy4wIKXMDSoASAFQAw%3D%3D";
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            stadiums = await stadiumService.getfav();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching favorite stadiums: {ex.Message}");
+        }
+    }
+
+    private void ShowDetails(Stadium stadium)
+    {
+        // Implement details popup or navigation logic if needed
+    }
+}
+
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f1f8f6; /* Light background for a fresh look */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Hero Section */
+    .hero-title {
+        font-size: 2rem; /* Reduced font size */
+        font-weight: bold;
+        color: #fff;
+        background: #007b00; /* Green grass-like background */
+        padding: 50px 0; /* Reduced padding */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Football field vibe */
+    }
+
+    /* Favorite Section */
+    .stadium-card {
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        border: none;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .stadium-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .stadium-card img {
+        border-radius: 12px;
+        object-fit: cover;
+        height: 180px;
+    }
+
+    .stadium-card h5 {
+        color: #007b00;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .stadium-card p {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .stadium-card .btn-info {
+        background-color: #17a2b8;
+        color: #fff;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .stadium-card .btn-info:hover {
+        background-color: #138496;
+    }
+
+    /* Popup Styles */
+    .popup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+    }
+
+    .popup-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 450px;
+        width: 100%;
+    }
+</style>
