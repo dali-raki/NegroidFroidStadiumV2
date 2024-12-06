@@ -1,6 +1,5 @@
 @using BlazorApp1.Domain
 @using UltimateStadium.Services
-
 @if (Show)
 {
     <div class="modal-overlay">
@@ -44,8 +43,8 @@
     [Parameter] public EventCallback<Stadium> OnSave { get; set; }
     [Inject] public IStadiumService StadiumService { get; set; }
     private string keyframes;
-    
-    private Stadium stadium = new Stadium(null, null, null, 0.00, false, null);
+
+    private Stadium stadium = new(null, null, null, 0.00, false, null);
 
     private async Task SaveStadium()
     {
@@ -58,9 +57,8 @@
 
         if (addedStadium != null)
         {
-            
         }
-        
+
 
         // Close the modal after saving
         await CloseModal();
@@ -68,7 +66,6 @@
 
     private void Load()
     {
-        
     }
 
     private async Task CloseModal()
