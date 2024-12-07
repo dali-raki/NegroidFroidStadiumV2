@@ -15,6 +15,9 @@ builder.Services.AddScoped<IDashBoardStorage, DashBoardStorage>();
 builder.Services.AddScoped<IDashBoardService, DashBoardService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<IReservationStorage, ReservationStorage>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+
 builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth", options =>
     {

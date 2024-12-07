@@ -67,4 +67,14 @@ public class StadiumService : IStadiumService
             throw e;
         }
     }
+
+    public Task<bool> reserveStadium(DateTime from, DateTime to, double price, string stadiumId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> updatestadium(string stadiumId, Stadium newStadium)
+    {
+        throw new NotImplementedException();
+    }
 }
