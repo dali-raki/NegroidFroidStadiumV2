@@ -1,4 +1,4 @@
-@page "/ZZ"
+@page "/"
 @using BlazorApp1.Domain
 @using Microsoft.AspNetCore.Authorization
 @using UltimateStadium.Services
@@ -7,9 +7,7 @@
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
-<div >
-    <button type="button" @onclick="log">aa</button>
-</div>
+
 <div class="form-container">
     <div class="icon">⚽</div>
 
@@ -55,6 +53,7 @@
 </div>
 
 @code {
+
     string email { get; set; }
     string password { get; set; }
     string newEmail { get; set; }
@@ -109,11 +108,14 @@
     {
         try
         {
+            
             bool isCreated = await UserService.CreateAccount(newEmail, newPassword, newRole);
+           
+            showCreateAccountForm = false;
             Console.WriteLine("Account creation attempt");
             if (isCreated)
             {
-                Navigation.NavigateTo("/"); 
+               
             }
             else
             {
