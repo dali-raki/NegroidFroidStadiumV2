@@ -17,7 +17,7 @@
                         <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
                     </div>
                     <div class="card-footer text-center bg-white">
-                        <button @onclick="OpenPopup" class="btn-primary">Edit Stadium</button>
+                        <button @onclick="() => OpenPopup(stadium)" class="btn-primary">Edit Stadium</button>
                     </div>
                 </div>
             </div>
@@ -35,11 +35,11 @@
             <input type="number" class="form-control" placeholder="Enter maximum players" />
 
             <label class="form-label">Price per Reservation</label>
-            <input type="number" class="form-control" placeholder="Enter price per reservation" />
+            <input @bind="target.stadiumRentalPrice" type="number" class="form-control" placeholder="Enter price per reservation" />
 
             <div class="popup-actions">
                 <button @onclick="ClosePopup" class="btn-cancel">Cancel</button>
-                <button @onclick="ClosePopup" class="btn-save">Save</button>
+                <button @onclick="save" class="btn-save">Save</button>
             </div>
         </div>
     </div>
@@ -158,13 +158,22 @@
     [Inject] public IStadiumService StadiumService { get; set; }
     private bool showPopup = false;
     List<Stadium> stadiums = new List<Stadium>();
+    private Stadium target = new Stadium("","","",0,false,"");
+    private string price { get; set; }
+
+    private async Task save()
+    {
+       await StadiumService.updatestadium(target.stadiumId, target);
+       ClosePopup();;
+    }
     protected override async Task OnInitializedAsync()
     {
         stadiums = await StadiumService.getAllStadiums();
     }
 
-    private void OpenPopup()
+    private void OpenPopup(Stadium stadium)
     {
+        target = stadium;
         showPopup = true;
     }
 
