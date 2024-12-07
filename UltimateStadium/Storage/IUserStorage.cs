@@ -4,7 +4,7 @@ namespace UltimateStadium.Storage
 {
     public interface IUserStorage
     {
-        Task<UserRole?> AuthenticateUser(string email, string password);
-        Task<bool> CreateAccount(string email, string password, UserRole role);
+        Task<(UserRole Role, string Fullname, string password1)> AuthenticateUser(string email, string password);
+        Task<bool> CreateAccount( string fullname ,string email, string password, UserRole role);
     }
 }
