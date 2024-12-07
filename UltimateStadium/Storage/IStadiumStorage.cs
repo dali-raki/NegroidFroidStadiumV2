@@ -11,4 +11,6 @@ public interface IStadiumStorage
     public  Task DeleteStadium(Guid stadiumId);
     public Task<bool>Favorite(Guid stadiumId);
     public Task<List<Stadium>> GetFavoriteStadiums();
+
+    public Task<bool> updateStadium(string stadiumId,Stadium stadium);
 }

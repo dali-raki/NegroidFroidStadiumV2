@@ -39,7 +39,7 @@
                         <td>@stadium.stadiumRentalPrice</td>
                         <td>
                             <button @onclick="() => DeleteStadium(Guid.Parse(stadium.stadiumId.ToString()))"><i class="fa-solid fa-trash"></i></button>
-                            <button @onclick="OpenPopup" class="btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button @onclick="() => UpdateStadium(stadium)" class="btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                             
                         </td>
                     </tr>
@@ -439,11 +439,20 @@ i {
 
 <!-- Add Stadium Modal -->
 <AddStadiumModal Show="@ShowModal" OnClose="CloseAddStadiumModal" OnSave="AddNewStadium" />
+<UpdateStadiumModal Show="@showUpdate" OnClose="CloseAddStadiumModal"  stadium="SS"  />
+
 
 @code {
+    private Stadium SS;
+
+    private void  UpdateStadium(Stadium stadium)
+    {
+        showUpdate = true;
+        SS = stadium;
+    }
 
     private List<Stadium> Stadiums = new();
-        private bool ShowModal = false, showPopup=false;
+        private bool ShowModal = false,showUpdate=false, showPopup=false;
 
         private void OpenPopup()
         {
@@ -475,10 +484,12 @@ i {
         ShowModal = true; // Show the modal
         Console.WriteLine("press");
     }
+    
 
     private async void CloseAddStadiumModal(bool show)
     {
         ShowModal = show; // Hide the modal
+        showUpdate = false;
         Stadiums = await StadiumStorage.selectAllStadiums();
     }
 

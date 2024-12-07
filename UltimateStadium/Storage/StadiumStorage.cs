@@ -20,6 +20,8 @@ public class StadiumStorage : IStadiumStorage
     private readonly string insertNewStadiumQuery="insert into stadiums (stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved) values (@stadiumId,@stadiumName,@stadiumPlace,@stadiumPrice,@isReserved)";
     private readonly string deleteStadiumByIdQuery = "DELETE FROM stadiums WHERE stadiumId = @stadiumId;";
     private readonly string selectStadiumByIdQuery = "SELECT * from stadiums WHERE stadiumId = @StadiumId";
+    private readonly string updateStadiumQuery = "update stadiums set stadiumName=@stadiumName,stadiumPlace=@stadiumPlace,stadiumPrice=@stadiumPrice,isReserved=@isReserved WHERE stadiumId = @StadiumId";
+
     public async Task<List<Stadium>> selectAllStadiums()
     {
         List<Stadium> stadiums = new List<Stadium>();
@@ -156,10 +158,31 @@ public class StadiumStorage : IStadiumStorage
                 
                 return stadiums;
                 }
-                
 
-                
+            public async Task<bool> updateStadium(string stadiumId,Stadium stadium)
+            {
+                try
+                {
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    {
+                        SqlCommand command = new SqlCommand(updateStadiumQuery, con);
+                        command.Parameters.AddWithValue("stadiumName", stadium.stadiumName);
+                        command.Parameters.AddWithValue("stadiumPlace", stadium.stadiumPlace);
+                        command.Parameters.AddWithValue("stadiumPrice", stadium.stadiumRentalPrice);
+                        command.Parameters.AddWithValue("isReserved", stadium.isRented);
+                        command.Parameters.AddWithValue("stadiumId", stadiumId);
+                        await con.OpenAsync();
+                        
+                        
+                        return await command.ExecuteNonQueryAsync() > 0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
+}
 
 
        

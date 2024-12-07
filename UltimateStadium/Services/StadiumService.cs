@@ -75,6 +75,6 @@ public class StadiumService : IStadiumService
 
     public Task<bool> updatestadium(string stadiumId, Stadium newStadium)
     {
-        throw new NotImplementedException();
+        return stadiumStorage.updateStadium(stadiumId, newStadium);
     }
 }
