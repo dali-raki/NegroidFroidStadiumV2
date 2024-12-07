@@ -15,7 +15,6 @@ public class StadiumStorage : IStadiumStorage
     private readonly string connectionString;
     private readonly string UpdateFavoriteQuery = "UPDATE stadiums SET fa = 1 WHERE stadiumId = @stadiumId";
     private readonly string query = "SELECT * FROM stadiums WHERE fa = 1";
-
     private readonly string selectAllStadiumsQuery="select * from stadiums";
     private readonly string insertNewStadiumQuery="insert into stadiums (stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved) values (@stadiumId,@stadiumName,@stadiumPlace,@stadiumPrice,@isReserved)";
     private readonly string deleteStadiumByIdQuery = "DELETE FROM stadiums WHERE stadiumId = @stadiumId;";

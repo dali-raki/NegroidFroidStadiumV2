@@ -12,6 +12,7 @@ namespace UltimateStadium.Storage
         private readonly string connectionString;
         private readonly string selectUserByEmailAndPasswordQuery = "SELECT [id], [email], [password], [role] FROM [users] WHERE [email] = @Email AND [password] = @Password";
         private readonly string insertUserQuery = "INSERT INTO  [users] ([id],[email], [password], [role]) VALUES (@id,@Email, @Password, @Role)";
+        
 
         public UserStorage(IConfiguration configuration)
         {
@@ -50,6 +51,10 @@ namespace UltimateStadium.Storage
                 throw new Exception("Error authenticating user");
             }
         }
+
+
+
+
         public async Task<bool> CreateAccount(string email, string password, UserRole role)
         {
             try
@@ -86,4 +91,8 @@ namespace UltimateStadium.Storage
         }
     
     }
+
+
+
+
 }

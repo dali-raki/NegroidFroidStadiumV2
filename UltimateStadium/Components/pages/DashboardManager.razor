@@ -182,9 +182,13 @@
 
 @code {
     private int managerCount = 0, usersCount = 0, stadiumsCount = 0;
+    [Inject]
+    public IReservationService reservationService { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
+        await reservationService.GetTotalReservationsByStadiumAndMonth("",2024,02);
         managerCount = await dashBoard.getManagersCount();
         usersCount = await dashBoard.getUsersCount();
         stadiumsCount = await dashBoard.getStadiumsCount();
