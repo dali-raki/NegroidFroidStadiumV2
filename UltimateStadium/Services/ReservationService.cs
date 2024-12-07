@@ -8,6 +8,7 @@ namespace UltimateStadium.Services
     {
         private readonly IReservationStorage Storage;
         public ReservationService(IReservationStorage stadiumStorage)
+        
         {
             this.Storage = stadiumStorage;
         }
