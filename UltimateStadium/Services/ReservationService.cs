@@ -1,25 +1,37 @@
 ﻿using Microsoft.AspNetCore.Components;
 using UltimateStadium.Domain;
+using UltimateStadium.Storage;
+
 namespace UltimateStadium.Services
 {
     public class ReservationService : IReservationService
     {
-        [Inject] UltimateStadium.Storage.IReservationStorage Storage { get; set; }
-
+        private readonly IReservationStorage Storage;
+        public ReservationService(IReservationStorage stadiumStorage)
+        {
+            this.Storage = stadiumStorage;
+        }
 
         public async Task<bool> CreateReservation(Reservation reservation)
         {
+            if (Storage == null)
+            {
+                Console.WriteLine("Storage is null");
+                return false;
+            }
+
             try
             {
+                // Proceed with reservation logic
                 return await Storage.InsertReservation(reservation);
             }
-            catch (Exception ex) 
-            { 
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex);
                 return false;
             }
-           
         }
+
 
 
         public async Task<Reservation> GetReservationById(string reservationId)

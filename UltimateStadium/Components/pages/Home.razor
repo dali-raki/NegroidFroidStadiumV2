@@ -68,6 +68,74 @@
     </div>
 </form>
 
+
+
+@code {
+    [Inject] public IStadiumService StadiumService { get; set; }
+    [Inject] public IDashBoardService dashBoardService { get; set; }
+    [Inject] public IReservationService reservationService { get; set; }
+
+    ReservationModel reservationModel = new ReservationModel();
+
+    private bool showPopup2 = false;
+    List<Stadium> stadiums = new List<Stadium>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        stadiums = await StadiumService.getAllStadiums();
+    }
+
+
+    private void OpenPopup2()
+    {
+        showPopup2 = true;
+    }
+
+    private void ClosePopup2()
+    {
+        showPopup2 = false;
+    }
+    private async Task Favorite(String stadiumId)
+    {
+        Guid a=Guid.Parse(stadiumId);
+
+        //   await StadiumService.Favorite(a);
+        stadiums = await StadiumService.getAllStadiums();
+    }
+
+    private async void Createreservation()
+    {
+        try
+        {
+            Console.WriteLine(reservationModel.EndTime);
+            Console.WriteLine(reservationModel.StartTime);
+            Console.WriteLine(reservationModel.ReservationDate);
+            
+            
+            var reservation = new Reservation
+                {
+                    EndTime = reservationModel.EndTime,
+                    StartTime = reservationModel.StartTime,
+                    ReservationDate = reservationModel.ReservationDate,
+                    IdUser = "187A3A89-C45D-40AA-B534-852D2F710773",
+                    IdReservation="1",
+                    IdStadium = "9f3b52c4-9c04-46f5-a4c7-2cb761925819",
+                   
+
+
+                };
+
+        await reservationService.CreateReservation(reservation);
+
+        }catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
+
+}
+
+
 <style>
     /* General Styles */
     body {
@@ -97,45 +165,45 @@
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
-        .stadium-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
+    .stadium-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
 
-        .stadium-card img {
-            border-radius: 12px;
-            object-fit: cover;
-            height: 180px;
-        }
+    .stadium-card img {
+        border-radius: 12px;
+        object-fit: cover;
+        height: 180px;
+    }
 
-        .stadium-card h5 {
-            color: #007b00;
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-top: 15px;
-        }
+    .stadium-card h5 {
+        color: #007b00;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-top: 15px;
+    }
 
-        .stadium-card p {
-            font-size: 1rem;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
+    .stadium-card p {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
 
-        .stadium-card .btn-reserve {
-            background-color: #28a745;
-            color: #fff;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .stadium-card .btn-reserve {
+        background-color: #28a745;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-            .stadium-card .btn-reserve:hover {
-                background-color: #218838;
-            }
+    .stadium-card .btn-reserve:hover {
+        background-color: #218838;
+    }
 
     .card-footer {
         padding: 10px;
@@ -214,9 +282,9 @@
         margin-top: 50px;
     }
 
-        .footer p {
-            margin: 0;
-        }
+    .footer p {
+        margin: 0;
+    }
 
     .popup-actions {
         display: flex;
@@ -238,64 +306,3 @@
         font-size: 1.6rem;
     }
 </style>
-
-@code {
-    [Inject] public IStadiumService StadiumService { get; set; }
-    [Inject] public IDashBoardService dashBoardService { get; set; }
-    [Inject] public IReservationService reservationService { get; set; }
-
-    ReservationModel reservationModel = new ReservationModel();
-
-    private bool showPopup2 = false;
-    List<Stadium> stadiums = new List<Stadium>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        stadiums = await StadiumService.getAllStadiums();
-    }
-
-
-    private void OpenPopup2()
-    {
-        showPopup2 = true;
-    }
-
-    private void ClosePopup2()
-    {
-        showPopup2 = false;
-    }
-    private async Task Favorite(String stadiumId)
-    {
-        Guid a=Guid.Parse(stadiumId);
-
-        //   await StadiumService.Favorite(a);
-        stadiums = await StadiumService.getAllStadiums();
-    }
-
-    private async void Createreservation()
-    {
-        try
-        {
-            
-            var reservation = new Reservation
-                {
-                    EndTime = reservationModel.EndTime,
-                    StartTime = reservationModel.StartTime,
-                    ReservationDate = reservationModel.ReservationDate,
-                    IdUser = "13a18b8a-2e7a-4565-a985-2da400d0ad93",
-                    IdReservation="1",
-                    IdStadium = "9f3b52c4-9c04-46f5-a4c7-2cb761925819",
-                   
-
-
-                };
-
-        await reservationService.CreateReservation(reservation);
-
-        }catch(Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
-    }
-
-}
