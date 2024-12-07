@@ -1,4 +1,5 @@
 using UltimateStadium.Components;
+using UltimateStadium.Domain;
 using UltimateStadium.Services;
 using UltimateStadium.Storage;
 
@@ -16,6 +17,7 @@ builder.Services.AddScoped<IReservationStorage, ReservationStorage>();
 builder.Services.AddScoped<IDashBoardService, DashBoardService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddSingleton<UserSessionService>();
 
 
 

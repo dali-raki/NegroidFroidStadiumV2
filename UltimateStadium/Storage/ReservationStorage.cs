@@ -61,7 +61,7 @@ namespace UltimateStadium.Storage
         WHERE IdStadium = @IdStadium
         AND ReservationDate = @ReservationDate
         AND (
-            (StartTime < @EndTime AND EndTime > @StartTime) 
+            (StartTime <= @EndTime AND EndTime >= @StartTime) 
         );";
 
 			try

@@ -1,10 +1,12 @@
 ﻿@page "/client"
+@using UltimateStadium.Domain
+@inject UserSessionService UserSessionService
 <div class="football-homepage">
     <!-- Hero Section -->
     <header class="hero-section text-center">
         <div class="container">
             <h1>Welcome to Ultimate Stadium</h1>
-            <p>Book your favorite stadium for football, basketball, or tennis events.</p>
+            <p>Hi Sir , @UserSessionService.UserId!,Book your favorite stadium for football, basketball, or tennis events.</p>
             <a href="/DashBoard" class="btn btn-primary btn-lg">Go to Dashboard</a>
         </div>
     </header>
