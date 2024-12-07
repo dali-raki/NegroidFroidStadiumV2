@@ -2,6 +2,7 @@ using UltimateStadium.Components;
 using UltimateStadium.Services;
 using UltimateStadium.Services.UserServie;
 using UltimateStadium.Storage;
+using UltimateStadium.Storage.ReservationStorage;
 using UltimateStadium.Storage.UserStorage;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddScoped<IDashBoardStorage, DashBoardStorage>();
 builder.Services.AddScoped<IDashBoardService, DashBoardService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserStorage, UserStorage>();
+builder.Services.AddScoped<IReservationStorage, ReservationStorage>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 var app = builder.Build();
 

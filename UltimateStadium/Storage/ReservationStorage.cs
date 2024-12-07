@@ -222,9 +222,9 @@ public class ReservationStorage : IReservationStorage
             IdReservation = reader["IdReservation"].ToString(),
             IdUser = reader["IdUser"].ToString(),
             IdStadium = reader["IdStadium"].ToString(),
-            ReservationDate = Convert.ToDateTime(reader["ReservationDate"]),
-            StartTime = TimeSpan.Parse(reader["StartTime"].ToString()),
-            EndTime = TimeSpan.Parse(reader["EndTime"].ToString())
+            ReservationDate = DateOnly.ParseExact(reader["ReservationDate"].ToString(), "yyyy-MM-dd"),
+            StartTime = TimeOnly.Parse(reader["StartTime"].ToString()),
+            EndTime = TimeOnly.Parse(reader["EndTime"].ToString())
         };
     }
 }

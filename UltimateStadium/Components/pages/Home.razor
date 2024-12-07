@@ -1,5 +1,7 @@
 @page "/Home"
 @using BlazorApp1.Domain
+@using UltimateStadium.Components.Models.Reservationmodels
+@using UltimateStadium.Domain
 @using UltimateStadium.Services
 
 @rendermode InteractiveServer
@@ -46,17 +48,23 @@
     <div class="popup" style="display:@(showPopup2 ? "flex" : "none")">
         <div class="popup-content">
             <div class="popup-header">
-                <h5 class="popup-title">Edit Stadium</h5>
+                <h5 class="popup-title">Reserve Stadium</h5>
             </div>
-            <label class="form-label">Select Date with Time</label>
-            <input type="datetime-local" class="form-control" />
+            <label class="form-label">Select Date</label>
+            <input type="date" class="form-control" @bind="reservationModel.ReservationDate" />
+
+            <label class="form-label">Select Start Time</label>
+            <input type="time" class="form-control" @bind="reservationModel.StartTime" />
+
+            <label class="form-label">Select End Time</label>
+            <input type="time" class="form-control" @bind="reservationModel.EndTime" />
 
             <label class="form-label">Price Total</label>
             <input type="number" class="form-control" disabled />
 
             <div class="popup-actions">
-                <button @onclick="ClosePopup2" class="btn-cancel">Cancel</button>
-                <button @onclick="ClosePopup2" class="btn-save">Save</button>
+                <button type="button" @onclick="ClosePopup2" class="btn-cancel">Cancel</button>
+                <button type="submit" @onclick="Createreservation" class="btn-save">Save</button>
             </div>
         </div>
     </div>
@@ -236,11 +244,17 @@
 @code {
     [Inject] public IStadiumService StadiumService { get; set; }
     [Inject] public IDashBoardService dashBoardService { get; set; }
+    [Inject] public IReservationService reservationService { get; set; }
+
+    ReservationModel reservationModel = new ReservationModel();
 
     private bool showPopup2 = false;
     List<Stadium> stadiums = new List<Stadium>();
 
     protected override async Task OnInitializedAsync()
+    
+    
+    
     {
         stadiums = await StadiumService.getAllStadiums();
     }
@@ -261,6 +275,38 @@
         
         await StadiumService.Favorite(a);
         stadiums = await StadiumService.getAllStadiums();
+    }
+
+    private async void Createreservation()
+    {
+        try
+        {
+
+            var reservation = new Reservation
+                {
+                    EndTime = reservationModel.EndTime,
+                    StartTime = reservationModel.StartTime,
+                    ReservationDate = reservationModel.ReservationDate,
+                    IdUser = "13a18b8a-2e7a-4565-a985-2da400d0ad93",
+                    IdReservation = "1",
+                    IdStadium = "9f3b52c4-9c04-46f5-a4c7-2cb761925819",
+
+
+
+                };
+            Console.WriteLine($"Reservation Date: {reservationModel.ReservationDate}");
+            Console.WriteLine($"Start Time: {reservationModel.StartTime}");
+            Console.WriteLine($"End Time: {reservationModel.EndTime}");
+
+            Console.WriteLine(reservationService != null ? "Service Initialized" : "Service Not Initialized");
+
+            await reservationService.CreateReservation(reservation);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
     }
 
 }

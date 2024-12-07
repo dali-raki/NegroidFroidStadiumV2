@@ -12,4 +12,6 @@ public interface IStadiumStorage
 
     public Task<bool> reserveStadium(DateTime dateTimeFrom,DateTime dateTimeTo,double fullPrice,string stadiumId);
     public Task<bool> updatestadium(string stadiumId,Stadium newStadium);
+    public Task<bool> Favorite(Guid stadiumId);
+    public Task<List<Stadium>> GetFavoriteStadiums();
 }

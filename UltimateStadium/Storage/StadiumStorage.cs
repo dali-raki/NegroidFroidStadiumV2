@@ -18,7 +18,9 @@ public class StadiumStorage : IStadiumStorage
     private readonly string deleteStadiumByIdQuery = "DELETE FROM stadiums WHERE stadiumId = @stadiumId;";
     private readonly string reserveStadiumQuery = "update stadiums set isReserved=true where stadiumId=@stadiumId";
     private readonly string updateStadiumQuery = "update stadiums set stadiumName=@stadiumName,stadiumPlace=@stadiumPlace,stadiumPrice=@stadiumPrice,isReserved=@isReserved where stadiumId=@stadiumId";
-    
+    private readonly string UpdateFavoriteQuery = "UPDATE stadiums SET fa = 1 WHERE stadiumId = @stadiumId";
+    private readonly string query = "SELECT * FROM stadiums WHERE fa = 1";
+
     public async Task<List<Stadium>> selectAllStadiums()
     {
         List<Stadium> stadiums = new List<Stadium>();
@@ -40,8 +42,9 @@ public class StadiumStorage : IStadiumStorage
                     string stadiumPlace = row["stadiumPlace"].ToString();
                     double stadiumPrice = (double)row["stadiumPrice"];
                     bool isReserved = ((byte)row["isReserved"])== 1;
-                    
-                    stadiums.Add(new Stadium(stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved));
+                    string favorite = row["fa"].ToString();
+
+                    stadiums.Add(new Stadium(stadiumId,stadiumName,stadiumPlace,stadiumPrice,isReserved,favorite));
                 }
             }
             return stadiums;
@@ -140,5 +143,64 @@ public class StadiumStorage : IStadiumStorage
                     throw new Exception(e.Message);
                 }
             }
+
+
+    public async Task<bool> Favorite(Guid stadiumId)
+    {
+        try
+        {
+            await using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+
+            using var command = new SqlCommand(UpdateFavoriteQuery, connection);
+            command.Parameters.Add("@stadiumId", SqlDbType.UniqueIdentifier).Value = stadiumId;
+
+            return await command.ExecuteNonQueryAsync() > 0;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("error favorite {ex.Message}");
+            throw;
+        }
+    }
+
+
+
+
+    public async Task<List<Stadium>> GetFavoriteStadiums()
+    {
+        List<Stadium> stadiums = new List<Stadium>();
+        try
+        {
+            await using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                await connection.OpenAsync();
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string stadiumId = row["stadiumId"].ToString();
+                    string stadiumName = row["stadiumName"].ToString();
+                    string stadiumPlace = row["stadiumPlace"].ToString();
+                    double stadiumPrice = (double)row["stadiumPrice"];
+                    bool isReserved = ((byte)row["isReserved"]) == 1;
+                    string favorite = row["fa"].ToString();
+
+                    stadiums.Add(new Stadium(stadiumId, stadiumName, stadiumPlace, stadiumPrice, isReserved, favorite));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error fetching favorite stadiums: {e.Message}");
+            throw;
+        }
+
+        return stadiums;
+    }
+
 }
     
