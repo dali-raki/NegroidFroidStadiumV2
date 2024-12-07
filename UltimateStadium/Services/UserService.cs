@@ -16,13 +16,13 @@ namespace UltimateStadium.Services
             _userStorage = userStorage;
         }
 
-        public async Task<UserRole?> AuthenticateUser(string email, string password)
+        public async Task<(UserRole? Role, string Fullname,string password)> AuthenticateUser(string email, string password)
         {
             return await _userStorage.AuthenticateUser(email, password);
         }
-        public async Task<bool> CreateAccount(string email, string password, UserRole role)
+        public async Task<bool> CreateAccount(string fullname ,string email, string password, UserRole role)
         {
-            return await _userStorage.CreateAccount(email, password, role);
+            return await _userStorage.CreateAccount(fullname,email, password, role);
         }
        
     }

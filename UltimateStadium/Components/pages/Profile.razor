@@ -1,0 +1,125 @@
+@page "/profile"
+@using UltimateStadium.Domain
+@inject NavigationManager Navigation
+@inject UserSessionService UserSessionService
+@rendermode InteractiveServer
+
+<h2 class="profile-heading">User Profile</h2>
+
+@if (string.IsNullOrEmpty(UserSessionService.UserId))
+{
+    <div class="not-logged-in">
+        <p>You are not logged in. Please log in to view your profile.</p>
+        <button class="primary-button" @onclick="NavigateToLogin">Go to Login</button>
+    </div>
+}
+else
+{
+    <div class="profile-card">
+        <img src="/Image/aaa.png" alt="Profile Picture" class="profile-image" />
+        <h3>@UserSessionService.Fullname</h3>
+        <p><strong>Email:</strong> @UserSessionService.UserId</p>
+        <p>
+            <strong>Password:</strong> 
+            @(isPasswordVisible ? UserSessionService.Password: "**********") 
+            <br >
+            <button class="toggle-password" @onclick="TogglePasswordVisibility">@passwordButtonText</button>
+        </p>
+        <button class="primary-button" @onclick="EditProfile">Edit Profile</button>
+    </div>
+}
+
+@code {
+    private bool isPasswordVisible = false;
+    private string passwordButtonText = "Show Password";
+
+    private void TogglePasswordVisibility()
+    {
+        isPasswordVisible = !isPasswordVisible;
+        passwordButtonText = isPasswordVisible ? "Hide Password" : "Show Password";
+    }
+
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    private void EditProfile()
+    {
+        Navigation.NavigateTo("/edit-profile"); // Navigate to an Edit Profile page
+    }
+}
+
+<style>
+    .profile-heading {
+        text-align: center;
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .not-logged-in {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .primary-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .primary-button:hover {
+        background-color: #45a049;
+    }
+
+    .profile-card {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px;
+        background: #f3f3f3;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+    }
+
+    .profile-card h3 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .profile-card p {
+        font-size: 1rem;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .toggle-password {
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 0.9rem;
+        text-decoration: underline;
+    }
+
+    .toggle-password:hover {
+        color: #0056b3;
+    }
+
+
+</style>

@@ -4,14 +4,15 @@ using BlazorApp1.Domain;
 using System;
 using System.Data;
 using System.Threading.Tasks;
+using UltimateStadium.Domain;
 
 namespace UltimateStadium.Storage
 {
     public class UserStorage : IUserStorage
     {
         private readonly string connectionString;
-        private readonly string selectUserByEmailAndPasswordQuery = "SELECT [id], [email], [password], [role] FROM [users] WHERE [email] = @Email AND [password] = @Password";
-        private readonly string insertUserQuery = "INSERT INTO  [users] ([id],[email], [password], [role]) VALUES (@id,@Email, @Password, @Role)";
+        private readonly string selectUserByEmailAndPasswordQuery = "SELECT [id],[fullname], [email], [password], [role] FROM [users] WHERE [email] = @Email AND [password] = @Password";
+        private readonly string insertUserQuery = "INSERT INTO  [users] ([id],[fullname],[email], [password] , [role]) VALUES (@id, @fullname ,@Email, @Password, @Role)";
 
         public UserStorage(IConfiguration configuration)
         {
@@ -19,7 +20,7 @@ namespace UltimateStadium.Storage
         }
 
      
-        public async Task<UserRole?> AuthenticateUser(string email, string password)
+        public async Task<(UserRole Role, string Fullname, string password1)> AuthenticateUser(string email, string password)
         {
             try
             {
@@ -35,12 +36,15 @@ namespace UltimateStadium.Storage
                     if (await reader.ReadAsync())
                     {
                        
-                        return Enum.Parse<UserRole>(reader["role"].ToString());
+                        var role = Enum.Parse<UserRole>(reader["role"].ToString());
+                        var fullname = reader["fullname"].ToString();
+                        var password1 =reader["password"].ToString();
+                        return (role, fullname,password1);
+                        
                     }
                     else
                     {
-                       
-                        return null;
+                        return (default(UserRole), string.Empty,"");
                     }
                 }
             }
@@ -50,7 +54,7 @@ namespace UltimateStadium.Storage
                 throw new Exception("Error authenticating user");
             }
         }
-        public async Task<bool> CreateAccount(string email, string password, UserRole role)
+        public async Task<bool> CreateAccount(string fullname,string email, string password, UserRole role)
         {
             try
             {
@@ -61,6 +65,7 @@ namespace UltimateStadium.Storage
                 {
                     SqlCommand command = new SqlCommand(insertUserQuery, connection);
                     command.Parameters.AddWithValue("@id", Guid.NewGuid().ToString());
+                    command.Parameters.AddWithValue("@fullname", fullname);
                     command.Parameters.AddWithValue("@Email", email);
                     command.Parameters.AddWithValue("@Password", password);
                     int roleId = role switch

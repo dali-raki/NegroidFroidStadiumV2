@@ -2,7 +2,7 @@
 @inject UserSessionService session
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">UltimateStadium</a>
+        <a class="navbar-brand" href="">Welcome @session.Fullname</a>
     </div>
 </div>
 
@@ -11,12 +11,13 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     @if (session.UserRole == "Admin")
     {
+        <a> Welcome @session.Fullname</a>
         <nav class="flex-column">
-            @*<div class="nav-item px-3">
-                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Stadiums
+            <div class="nav-item px-3">
+                <NavLink class="nav-link"  href="profile">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Profile
                 </NavLink>
-            </div>*@
+            </div>
 
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="DashBoarda">
@@ -35,8 +36,12 @@
     else if (session.UserRole == "Manager")
     {
         <nav class="flex-column">
-            
 
+            <div class="nav-item px-3">
+                <NavLink class="nav-link"  href="profile">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Profile
+                </NavLink>
+            </div>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="DashBoardm">
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> DAshBoard
@@ -58,8 +63,12 @@
     else if (session.UserRole == "Client")
     {
         <nav class="flex-column">
-           
 
+            <div class="nav-item px-3">
+                <NavLink class="nav-link"  href="profile">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Profile
+                </NavLink>
+            </div>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="client">
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Home

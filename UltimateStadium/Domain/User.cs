@@ -4,6 +4,7 @@ namespace BlazorApp1.Domain
     {
         public string UserId { get; set; }
         public string Gmail { get; set; }
+        public string fullname { get; set; }
         public UserRole Role { get; set; }
 
    
