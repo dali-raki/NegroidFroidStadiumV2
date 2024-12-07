@@ -23,32 +23,68 @@ namespace UltimateStadium.Storage
         WHERE IdReservation = @IdReservation";
         private string deleteReservationQuery = "DELETE FROM Reservation WHERE IdReservation = @IdReservation";
 
-        public async Task<bool> InsertReservation(Reservation reservation)
-        {
+		public async Task<bool> InsertReservation(Reservation reservation)
+		{
+			try
+			{
+				bool hasConflict = await CheckForTimeConflict(reservation.IdStadium, reservation.ReservationDate, reservation.StartTime, reservation.EndTime);
+				if (hasConflict)
+				{
+					Console.WriteLine("true");
+					return false;
+				}
 
-            try
-            {
-                using (SqlConnection con = new SqlConnection(connectionString))
-                {
-                    SqlCommand command = new SqlCommand(insertReservationQuery, con);
-                    command.Parameters.AddWithValue("@IdReservation", reservation.IdReservation);
-                    command.Parameters.AddWithValue("@IdUser", reservation.IdUser);
-                    command.Parameters.AddWithValue("@IdStadium", reservation.IdStadium);
-                    command.Parameters.AddWithValue("@ReservationDate", reservation.ReservationDate);
-                    command.Parameters.AddWithValue("@StartTime", reservation.StartTime);
-                    command.Parameters.AddWithValue("@EndTime", reservation.EndTime);
+				using (SqlConnection con = new SqlConnection(connectionString))
+				{
+					SqlCommand command = new SqlCommand(insertReservationQuery, con);
+					command.Parameters.AddWithValue("@IdReservation", reservation.IdReservation);
+					command.Parameters.AddWithValue("@IdUser", reservation.IdUser);
+					command.Parameters.AddWithValue("@IdStadium", reservation.IdStadium);
+					command.Parameters.AddWithValue("@ReservationDate", reservation.ReservationDate);
+					command.Parameters.AddWithValue("@StartTime", reservation.StartTime);
+					command.Parameters.AddWithValue("@EndTime", reservation.EndTime);
+					Console.WriteLine("false");
+					await con.OpenAsync();
+					return await command.ExecuteNonQueryAsync() > 0;
+				}
+			}
+			catch
+			{
+				throw;
+			}
+		}
+		private async Task<bool> CheckForTimeConflict(string stadiumId, DateOnly reservationDate, TimeOnly startTime, TimeOnly endTime)
+		{
+			string checkConflictQuery = @"
+        SELECT COUNT(*)
+        FROM Reservation
+        WHERE IdStadium = @IdStadium
+        AND ReservationDate = @ReservationDate
+        AND (
+            (StartTime < @EndTime AND EndTime > @StartTime) 
+        );";
 
-                    await con.OpenAsync();
-                    return await command.ExecuteNonQueryAsync() > 0;
-                }
-            }
-            catch
-            {
-                throw;
-            }
-        }
+			try
+			{
+				using (SqlConnection con = new SqlConnection(connectionString))
+				{
+					SqlCommand command = new SqlCommand(checkConflictQuery, con);
+					command.Parameters.AddWithValue("@IdStadium", stadiumId);
+					command.Parameters.AddWithValue("@ReservationDate", reservationDate);
+					command.Parameters.AddWithValue("@StartTime", startTime);
+					command.Parameters.AddWithValue("@EndTime", endTime);
 
-        public async Task<Reservation> SelectReservationById(string idReservation)
+					await con.OpenAsync();
+					var result = await command.ExecuteScalarAsync();
+					return Convert.ToInt32(result) > 0;
+				}
+			}
+			catch
+			{
+				throw;
+			}
+		}
+		public async Task<Reservation> SelectReservationById(string idReservation)
         {
             try
             {

@@ -4,138 +4,6 @@
 @using UltimateStadium.Domain
 @using UltimateStadium.Services
 @rendermode InteractiveServer
-
-<h3 class="text-center hero-title">Reservation</h3>
-
-<div class="container py-4">
-    <div class="row g-4">
-        @foreach (var stadium in stadiums)
-        {
-            <div class="col-md-4">
-                <div class="card h-100 shadow-lg stadium-card">
-                    <img src="/Image/staduim.jpg" class="card-img-top" alt="@stadium.stadiumName">
-                    <div class="card-body">
-                        <h5 class="card-title">@stadium.stadiumName</h5>
-                        <p class="card-text text-muted">@stadium.stadiumPlace</p>
-                        <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
-                        @if (stadium.isRented)
-                        {
-                            <p class="text-danger">Stadium Reserved</p>
-                        }
-                        else
-                        {
-                            <p class="text-success">Stadium Available</p>
-                        }
-                    </div>
-                   
-                    <div class="card-footer text-center">
-                        <button type="button" @onclick="OpenPopup2" class="btn-reserve">Reserve Stadium</button>
-                        <!-- Favorite Button with Star Icon -->
-                        <button type="button" @onclick="() => Favorite(stadium.stadiumId)" class="btn-favorite">
-                            <i class="@((stadium.favorite == "1" ? "bi bi-star-fill" : "bi bi-star"))"></i>
-                        </button>
-
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
-<form>
-    <div class="popup" style="display:@(showPopup2 ? "flex" : "none")" >
-        <div class="popup-content">
-            <div class="popup-header">
-                <h5 class="popup-title">Reserve Stadium</h5>
-            </div>
-            <label class="form-label">Select Date</label>
-            <input type="date" class="form-control" @bind="reservationModel.ReservationDate" />
-
-            <label class="form-label">Select Start Time</label>
-            <input type="time" class="form-control" @bind="reservationModel.StartTime"/>
-
-            <label class="form-label">Select End Time</label>
-            <input type="time" class="form-control" @bind="reservationModel.EndTime" />
-
-            <label class="form-label">Price Total</label>
-            <input type="number" class="form-control" disabled />
-
-            <div class="popup-actions">
-                <button type="button" @onclick="ClosePopup2" class="btn-cancel">Cancel</button>
-                <button type="submit" @onclick="Createreservation" class="btn-save">Save</button>
-            </div>
-        </div>
-    </div>
-</form>
-
-
-
-@code {
-    [Inject] public IStadiumService StadiumService { get; set; }
-    [Inject] public IDashBoardService dashBoardService { get; set; }
-    [Inject] public IReservationService reservationService { get; set; }
-
-    ReservationModel reservationModel = new ReservationModel();
-
-    private bool showPopup2 = false;
-    List<Stadium> stadiums = new List<Stadium>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        stadiums = await StadiumService.getAllStadiums();
-    }
-
-
-    private void OpenPopup2()
-    {
-        showPopup2 = true;
-    }
-
-    private void ClosePopup2()
-    {
-        showPopup2 = false;
-    }
-    private async Task Favorite(String stadiumId)
-    {
-        Guid a=Guid.Parse(stadiumId);
-
-        //   await StadiumService.Favorite(a);
-        stadiums = await StadiumService.getAllStadiums();
-    }
-
-    private async void Createreservation()
-    {
-        try
-        {
-            Console.WriteLine(reservationModel.EndTime);
-            Console.WriteLine(reservationModel.StartTime);
-            Console.WriteLine(reservationModel.ReservationDate);
-            
-            
-            var reservation = new Reservation
-                {
-                    EndTime = reservationModel.EndTime,
-                    StartTime = reservationModel.StartTime,
-                    ReservationDate = reservationModel.ReservationDate,
-                    IdUser = "187A3A89-C45D-40AA-B534-852D2F710773",
-                    IdReservation="1",
-                    IdStadium = "9f3b52c4-9c04-46f5-a4c7-2cb761925819",
-                   
-
-
-                };
-
-        await reservationService.CreateReservation(reservation);
-
-        }catch(Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
-    }
-
-}
-
-
 <style>
     /* General Styles */
     body {
@@ -165,45 +33,45 @@
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
-    .stadium-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    }
+        .stadium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
 
-    .stadium-card img {
-        border-radius: 12px;
-        object-fit: cover;
-        height: 180px;
-    }
+        .stadium-card img {
+            border-radius: 12px;
+            object-fit: cover;
+            height: 180px;
+        }
 
-    .stadium-card h5 {
-        color: #007b00;
-        font-size: 1.3rem;
-        font-weight: bold;
-        margin-top: 15px;
-    }
+        .stadium-card h5 {
+            color: #007b00;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 15px;
+        }
 
-    .stadium-card p {
-        font-size: 1rem;
-        color: #6c757d;
-        margin-bottom: 10px;
-    }
+        .stadium-card p {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
 
-    .stadium-card .btn-reserve {
-        background-color: #28a745;
-        color: #fff;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-weight: bold;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+        .stadium-card .btn-reserve {
+            background-color: #28a745;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-    .stadium-card .btn-reserve:hover {
-        background-color: #218838;
-    }
+            .stadium-card .btn-reserve:hover {
+                background-color: #218838;
+            }
 
     .card-footer {
         padding: 10px;
@@ -260,7 +128,7 @@
         padding: 10px 20px;
         margin: 10px;
         cursor: pointer;
-        border:none;
+        border: none;
     }
 
     .btn-cancel {
@@ -282,14 +150,15 @@
         margin-top: 50px;
     }
 
-    .footer p {
-        margin: 0;
-    }
+        .footer p {
+            margin: 0;
+        }
 
     .popup-actions {
         display: flex;
         justify-content: space-between;
     }
+
     .btn-favorite {
         background-color: transparent;
         border: none;
@@ -298,11 +167,144 @@
         color: #ffc107;
     }
 
-    .btn-favorite:hover {
-        color: #ffcc00;
-    }
+        .btn-favorite:hover {
+            color: #ffcc00;
+        }
 
     .bi-star, .bi-star-fill {
         font-size: 1.6rem;
     }
 </style>
+
+<h3 class="text-center hero-title">Reservation</h3>
+
+<div class="container py-4">
+    <div class="row g-4">
+        @foreach (var stadium in stadiums)
+        {
+            <div class="col-md-4">
+                <div class="card h-100 shadow-lg stadium-card">
+                    <img src="/Image/staduim.jpg" class="card-img-top" alt="@stadium.stadiumName">
+                    <div class="card-body">
+                        <h5 class="card-title">@stadium.stadiumName</h5>
+                        <p class="card-text text-muted">@stadium.stadiumPlace</p>
+                        <p class="card-text fw-bold">@stadium.stadiumRentalPrice</p>
+                        @if (stadium.isRented)
+                        {
+                            <p class="text-danger">Stadium Reserved</p>
+                        }
+                        else
+                        {
+                            <p class="text-success">Stadium Available</p>
+                        }
+                    </div>
+                   
+                    <div class="card-footer text-center">
+                        <button type="button" @onclick="()=>OpenPopup2(stadium.stadiumId)" class="btn-reserve">Reserve Stadium</button>
+                        <!-- Favorite Button with Star Icon -->
+                        <button type="button" @onclick="() => Favorite(stadium.stadiumId)" class="btn-favorite">
+                            <i class="@((stadium.favorite == "1" ? "bi bi-star-fill" : "bi bi-star"))"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<form>
+    <div class="popup" style="display:@(showPopup2 ? "flex" : "none")" >
+        <div class="popup-content">
+            <div class="popup-header">
+                <h5 class="popup-title">Reserve Stadium</h5>
+            </div>
+            <label class="form-label">Select Date</label>
+            <input type="date" class="form-control" @bind="reservationModel.ReservationDate" />
+
+            <label class="form-label">Select Start Time</label>
+            <input type="time" class="form-control" @bind="reservationModel.StartTime"/>
+
+            <label class="form-label">Select End Time</label>
+            <input type="time" class="form-control" @bind="reservationModel.EndTime" />
+
+            <label class="form-label">Price Total</label>
+            <input type="number" class="form-control" disabled />
+
+            <div class="popup-actions">
+                <button type="button" @onclick="ClosePopup2" class="btn-cancel">Cancel</button>
+                <button type="submit" @onclick="Createreservation" class="btn-save">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@code {
+    [Inject] public IStadiumService StadiumService { get; set; }
+    [Inject] public IDashBoardService dashBoardService { get; set; }
+    [Inject] public IReservationService reservationService { get; set; }
+
+    ReservationModel reservationModel = new ReservationModel();
+    public string idS;
+    private bool showPopup2 = false;
+    List<Stadium> stadiums = new List<Stadium>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        stadiums = await StadiumService.getAllStadiums();
+    }
+
+
+    private void OpenPopup2(string stadiumId)
+    {
+        idS = stadiumId;
+        showPopup2 = true;
+    }
+
+    private void ClosePopup2()
+    {
+        showPopup2 = false;
+    }
+    private async Task Favorite(String stadiumId)
+    {
+        Guid a=Guid.Parse(stadiumId);
+
+        await StadiumService.Favorite(a);
+        stadiums = await StadiumService.getAllStadiums();
+    }
+
+    private async void Createreservation()
+    {
+        try
+        {
+            Console.WriteLine(reservationModel.EndTime);
+            Console.WriteLine(reservationModel.StartTime);
+            Console.WriteLine(reservationModel.ReservationDate);
+            
+            
+            var reservation = new Reservation
+                {
+                    EndTime = reservationModel.EndTime,
+                    StartTime = reservationModel.StartTime,
+                    ReservationDate = reservationModel.ReservationDate,
+                    IdUser = "187A3A89-C45D-40AA-B534-852D2F710773",
+                    IdReservation=Guid.NewGuid().ToString(),
+                    IdStadium = idS,
+                   
+
+
+                };
+
+        await reservationService.CreateReservation(reservation);
+
+        }catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
+
+}
+
+
