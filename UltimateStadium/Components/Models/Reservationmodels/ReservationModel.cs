@@ -1,6 +1,6 @@
-﻿namespace UltimateStadium.Domain
+﻿namespace UltimateStadium.Components.Models.Reservationmodels
 {
-    public class Reservation
+    public class ReservationModel
     {
         public string IdReservation { get; set; }
         public string IdUser { get; set; }

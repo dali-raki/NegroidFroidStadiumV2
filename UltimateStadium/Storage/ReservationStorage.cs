@@ -31,12 +31,12 @@ namespace UltimateStadium.Storage
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     SqlCommand command = new SqlCommand(insertReservationQuery, con);
-                    command.Parameters.AddWithValue("IdReservation", Guid.NewGuid().ToString());
-                    command.Parameters.AddWithValue("IdUser", reservation.IdUser);
-                    command.Parameters.AddWithValue("IdStadium", reservation.IdStadium);
-                    command.Parameters.AddWithValue("ReservationDate", reservation.ReservationDate);
-                    command.Parameters.AddWithValue("StartTime", reservation.StartTime);
-                    command.Parameters.AddWithValue("EndTime", reservation.EndTime);
+                    command.Parameters.AddWithValue("@IdReservation", reservation.IdReservation);
+                    command.Parameters.AddWithValue("@IdUser", reservation.IdUser);
+                    command.Parameters.AddWithValue("@IdStadium", reservation.IdStadium);
+                    command.Parameters.AddWithValue("@ReservationDate", reservation.ReservationDate);
+                    command.Parameters.AddWithValue("@StartTime", reservation.StartTime);
+                    command.Parameters.AddWithValue("@EndTime", reservation.EndTime);
 
                     await con.OpenAsync();
                     return await command.ExecuteNonQueryAsync() > 0;
@@ -221,9 +221,9 @@ namespace UltimateStadium.Storage
                 IdReservation = reader["IdReservation"].ToString(),
                 IdUser = reader["IdUser"].ToString(),
                 IdStadium = reader["IdStadium"].ToString(),
-                ReservationDate = Convert.ToDateTime(reader["ReservationDate"]),
-                StartTime = TimeSpan.Parse(reader["StartTime"].ToString()),
-                EndTime = TimeSpan.Parse(reader["EndTime"].ToString())
+                ReservationDate = DateOnly.Parse(reader["ReservationDate"].ToString()),
+                StartTime = TimeOnly.Parse(reader["StartTime"].ToString()),
+                EndTime = TimeOnly.Parse(reader["EndTime"].ToString())
             };
         }
     }

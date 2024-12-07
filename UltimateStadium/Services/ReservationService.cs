@@ -9,7 +9,16 @@ namespace UltimateStadium.Services
 
         public async Task<bool> CreateReservation(Reservation reservation)
         {
-            return await Storage.InsertReservation(reservation);
+            try
+            {
+                return await Storage.InsertReservation(reservation);
+            }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex);
+                return false;
+            }
+           
         }
 
 
