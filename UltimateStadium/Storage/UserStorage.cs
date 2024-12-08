@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using BlazorApp1.Domain;
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UltimateStadium.Domain;
 
@@ -58,9 +59,6 @@ namespace UltimateStadium.Storage
         {
             try
             {
-             
-               
-
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand command = new SqlCommand(insertUserQuery, connection);
@@ -74,13 +72,17 @@ namespace UltimateStadium.Storage
                         UserRole.Client => 1,
 
                     };
+                    
                     command.Parameters.AddWithValue("@Role", roleId);
 
                     await connection.OpenAsync();
 
                     int rowsAffected = await command.ExecuteNonQueryAsync();
 
-                    return rowsAffected > 0;  
+                    return rowsAffected > 0;
+                  
+                    
+                    
                 }
             }
             catch (Exception ex)

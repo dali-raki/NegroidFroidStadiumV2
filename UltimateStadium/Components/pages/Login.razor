@@ -1,4 +1,4 @@
-@page "/"
+﻿@page "/"
 @using BlazorApp1.Domain
 @using Microsoft.AspNetCore.Authorization
 @using UltimateStadium.Domain
@@ -82,6 +82,8 @@
                 UserSessionService.UserRole = userRole.ToString();
                 UserSessionService.Fullname = fullname; 
                 UserSessionService.Password = password;
+                
+                
                 Console.WriteLine( UserSessionService.Fullname);
                 switch (userRole)
                 {
